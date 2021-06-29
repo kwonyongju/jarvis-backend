@@ -12,6 +12,7 @@ public class Inventory {
 
     @Id
     @GeneratedValue
+    @Column(name = "inventory_id")
     private Long Id;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventory")
