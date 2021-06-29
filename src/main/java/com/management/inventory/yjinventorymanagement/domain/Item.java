@@ -1,8 +1,10 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Item {
@@ -10,4 +12,9 @@ public class Item {
     @Id
     @GeneratedValue
     private Long Id;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+    private List<Ingredient> ingredients = new ArrayList<Ingredient>();
+
+    private Long price;
 }
