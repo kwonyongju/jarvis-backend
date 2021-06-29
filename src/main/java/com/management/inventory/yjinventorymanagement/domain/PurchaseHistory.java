@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Purchase {
+public class PurchaseHistory {
 
     @Id
     @GeneratedValue
