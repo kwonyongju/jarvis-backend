@@ -16,5 +16,5 @@ public class Item {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
     private List<Ingredient> ingredients = new ArrayList<Ingredient>();
 
-    private Long price;
+    private Long priceInCent;
 }

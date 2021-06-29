@@ -10,9 +10,10 @@ public abstract class Ingredient {
 
     @Id
     @GeneratedValue
+    @Column(name = "ingredient_id")
     private Long Id;
 
-    private Long price;
-
-    private int quantity;
+    private String name;
+    private Long priceInCent;
+    private int stockQuantity;
 }
