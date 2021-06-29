@@ -11,7 +11,7 @@ public class OrderIngredient {
 
     @Id
     @GeneratedValue
-    @Column("order_ingredient_id")
+    @Column(name = "order_ingredient_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
