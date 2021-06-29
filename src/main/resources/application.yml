@@ -1,0 +1,12 @@
+spring:
+  datasource:
+#    url: jdbc:h2:tcp://localhost/~/yj-inventory-management
+    url: jdbc:mysql://localhost/inventory_management
+    username:
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE

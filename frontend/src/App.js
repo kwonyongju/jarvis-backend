@@ -30,21 +30,8 @@ import './App.css';
 
 class App extends Component {
 
-    state = {};
 
-        componentDidMount() {
-            this.dadJokes()
-        }
-
-    dadJokes = () => {
-        fetch('/api/dadjokes')
-            .then(response => response.text())
-            .then(message => {
-                console.log(message);
-                this.setState({message: message});
-            });
-    };
-
+    
     render() {
         return (
             <div className="App">
