@@ -1,50 +1,28 @@
-// import logo from './logo.svg';
-// import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+import Content from "./components/layout/Content";
+import { GlobalStyle } from "./constants/global";
+import MainPage from "./components/MainPage";
 
-// export default App;
-
-import React, {Component} from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-class App extends Component {
-
-
-    
-    render() {
-        return (
-            <div className="App">
-            <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo"/>
-            <h6 className="App-title">{this.state.message}</h6>
-            </header>
-            <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        </div>
-    );
-    }
-}
+const App = () => {
+  return (
+    <>
+      <Router>
+        <GlobalStyle />
+        <Route exact path="/">
+          {/* <Home /> */}
+        </Route>
+        <Content>
+          <MainPage />
+          <Switch>
+            <Route path="/customer">{/* <Projects /> */}</Route>
+            <Route path="/manager">{/* <Resume /> */}</Route>
+          </Switch>
+        </Content>
+      </Router>
+    </>
+  );
+};
 
 export default App;
