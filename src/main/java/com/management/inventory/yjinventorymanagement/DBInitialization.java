@@ -1,9 +1,12 @@
 package com.management.inventory.yjinventorymanagement;
 
+import com.management.inventory.yjinventorymanagement.constant.Recipe;
 import com.management.inventory.yjinventorymanagement.domain.Ingredient.*;
 import com.management.inventory.yjinventorymanagement.domain.Inventory;
 import com.management.inventory.yjinventorymanagement.domain.Item;
+import com.management.inventory.yjinventorymanagement.domain.Menu;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +19,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class DBInitialization {
 
     private final InitializationService initializationService;
@@ -36,12 +40,12 @@ public class DBInitialization {
             Inventory inventory = new Inventory();
 
             // Create ingredients
-            Ingredient bacon = new Bacon("bacon", 49L);
-            Ingredient bun = new Bun("bun", 99L);
-            Ingredient cheese = new Cheese("cheese", 199L);
-            Ingredient lettuce = new Lettuce("lettuce", 49L);
+            Ingredient bacon = new Bacon("bacon", 39L);
+            Ingredient bun = new Bun("bun", 29L);
+            Ingredient cheese = new Cheese("cheese", 89L);
+            Ingredient lettuce = new Lettuce("lettuce", 10L);
             Ingredient patty = new Patty("patty", 599L);
-            Ingredient tomato = new Tomato("tomato", 199L);
+            Ingredient tomato = new Tomato("tomato", 35L);
 
             List<Ingredient> ingredientList = new ArrayList<>(List.of(bacon, bun, cheese, lettuce, patty, tomato));
 
@@ -52,9 +56,14 @@ public class DBInitialization {
                 int qty = randomGenerator.nextInt(20) + 10;
                 inventory.addStock(i, qty);
             }
-
             em.persist(inventory);
 
+            // Add menu
+            Recipe[] recipes = Recipe.values();
+            for (Recipe r: recipes) {
+                Menu menu = new Menu(r.getFormattedName(), r.getDescription());
+                em.persist(menu);
+            }
         }
     }
 }

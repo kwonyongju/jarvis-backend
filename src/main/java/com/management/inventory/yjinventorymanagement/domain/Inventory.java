@@ -4,9 +4,7 @@ import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredie
 import com.management.inventory.yjinventorymanagement.exception.NotEnoughStockException;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -31,5 +29,14 @@ public class Inventory {
 
         if (!stock.containsKey(iName))
             stock.put(iName, qty);
+    }
+
+    public void removeStock(String ingredientName) {
+        int stockQuantity = stock.get(ingredientName);
+
+        if (--stockQuantity < 0)
+            throw new NotEnoughStockException(ingredientName + " is out of stock!");
+
+        stock.put(ingredientName, stockQuantity);
     }
 }

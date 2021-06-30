@@ -28,21 +28,11 @@ public abstract class Ingredient {
 
     @Column(name = "ingredient_name", unique = true)
     private String name;
-
     private Long priceInCent;
-    @Column(name = "stock_quantity")
-    private int stockQuantity;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "inventory_id")
     private Inventory inventory;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "item_id")
-    private Item item;
-
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingredient")
-//    private List<>
 
     public Ingredient() {}
 
@@ -50,17 +40,4 @@ public abstract class Ingredient {
         this.name = name;
         this.priceInCent = priceInCent;
     }
-
-//    public void use(int qty) {
-//        int remainingQty = this.stockQuantity - qty;
-//
-//        if (remainingQty < 0)
-//            throw new NotEnoughStockException("The ingredient is out of stock");
-//
-//        this.stockQuantity = remainingQty;
-//    }
-//
-//    public void addStock(int qty) {
-//        this.stockQuantity += qty;
-//    }
 }

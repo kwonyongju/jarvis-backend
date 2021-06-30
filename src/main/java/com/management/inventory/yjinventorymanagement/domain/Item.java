@@ -1,9 +1,9 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static javax.persistence.FetchType.*;
@@ -16,12 +16,40 @@ public class Item {
     @Column(name = "item_id")
     private Long Id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
-    private List<Ingredient> ingredients = new ArrayList<Ingredient>();
+    @NotNull
+    private String name;
+    private String description;
+
+    @ElementCollection
+    private List<String> ingredients = new ArrayList<>();
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "purchase_id")
-    private PurchaseHistory purchase;
+    private Purchase purchase;
 
     private Long priceInCent;
+
+    public Item(@NotNull String name, Long priceInCent, List<String> ingredients) {
+        this.name = name;
+        this.ingredients = ingredients;
+        this.priceInCent = priceInCent;
+    }
+
+    protected Item() {
+    }
+
+    public static Item createItem(Inventory inventory, String name, Long priceInCent, String... ingredients) {
+        // Remove stock from inventory if stock is enough
+        for (String ingredient: ingredients)
+            inventory.removeStock(ingredient);
+
+        List<String> ingredientsList = Arrays.asList(ingredients);
+        Item item = new Item(name, priceInCent, ingredientsList);
+
+        return item;
+    }
 }
