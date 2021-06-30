@@ -4,13 +4,14 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("Tomato")
-public class Tomato extends Ingredient {
-    public Tomato(String name, Long priceInCent) {
+@DiscriminatorValue("Bacon")
+
+public class Bacon extends Ingredient {
+    public Bacon(String name, Long priceInCent) {
         super(name, priceInCent);
     }
 
-    protected Tomato() {
+    protected Bacon() {
 
     }
 }

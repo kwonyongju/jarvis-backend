@@ -1,10 +1,13 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
 import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
+import com.management.inventory.yjinventorymanagement.exception.NotEnoughStockException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table
@@ -15,6 +18,18 @@ public class Inventory {
     @Column(name = "inventory_id")
     private Long Id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "inventory")
-    private List<Ingredient> ingredients = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "ingredient_stock", joinColumns = { @JoinColumn(name = "inventory_id")})
+    @MapKeyColumn(name = "ingredient")
+    @Column(name = "stock_quantity")
+    private Map<String, Integer> stock = new HashMap<>();
+
+    public void addStock(Ingredient ingredient, int qty) {
+        String iName = ingredient.getName();
+        if (stock.containsKey(iName))
+            stock.put(iName, stock.get(iName) + qty);
+
+        if (!stock.containsKey(iName))
+            stock.put(iName, qty);
+    }
 }
