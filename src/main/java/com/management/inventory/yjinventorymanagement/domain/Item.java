@@ -1,5 +1,8 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
+import com.management.inventory.yjinventorymanagement.constant.ItemCatalog;
+import lombok.Getter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.List;
 import static javax.persistence.FetchType.*;
 
 @Entity
+@Getter
 public class Item {
 
     @Id
@@ -42,14 +46,5 @@ public class Item {
     protected Item() {
     }
 
-    public static Item createItem(Inventory inventory, String name, Long priceInCent, String... ingredients) {
-        // Remove stock from inventory if stock is enough
-        for (String ingredient: ingredients)
-            inventory.removeStock(ingredient);
 
-        List<String> ingredientsList = Arrays.asList(ingredients);
-        Item item = new Item(name, priceInCent, ingredientsList);
-
-        return item;
-    }
 }

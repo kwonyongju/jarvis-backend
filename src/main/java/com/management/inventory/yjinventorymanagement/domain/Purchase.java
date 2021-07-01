@@ -1,5 +1,7 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,7 +10,8 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-public class PurchaseHistory {
+@Getter
+public class Purchase {
 
     @Id
     @GeneratedValue
@@ -24,4 +27,29 @@ public class PurchaseHistory {
 
     private Long totalPriceInCent;
     private LocalDateTime purchaseDate;
+
+    protected Purchase() { }
+
+    public Purchase(Person person, List<Item> items) {
+        this.person = person;
+        this.items = items;
+    }
+
+    private void setTotalPriceInCent(Long totalPriceInCent) {
+        this.totalPriceInCent = totalPriceInCent;
+    }
+
+    private void setPurchaseDate(LocalDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public static Purchase orderItems(Person person, List<Item> items) {
+        Purchase purchase = new Purchase(person, items);
+
+        Long totalPrice = items.stream().map(i -> i.getPriceInCent()).reduce(0L, Long::sum);
+        purchase.setTotalPriceInCent(totalPrice);
+        purchase.setPurchaseDate(LocalDateTime.now());
+
+        return purchase;
+    }
 }

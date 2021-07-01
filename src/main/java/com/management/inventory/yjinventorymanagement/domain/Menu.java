@@ -12,10 +12,12 @@ public class Menu {
 
     private String itemName;
     private String itemDescription;
+    private Long priceInCent;
 
-    public Menu(String itemName, String itemDescription) {
+    public Menu(String itemName, String itemDescription, Long priceInCent) {
         this.itemName = itemName;
         this.itemDescription = itemDescription;
+        this.priceInCent = priceInCent;
     }
 
     protected Menu() {}

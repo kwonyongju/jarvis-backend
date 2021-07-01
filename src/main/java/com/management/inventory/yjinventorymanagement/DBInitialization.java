@@ -1,16 +1,17 @@
 package com.management.inventory.yjinventorymanagement;
 
-import com.management.inventory.yjinventorymanagement.constant.Recipe;
+import com.management.inventory.yjinventorymanagement.constant.ItemCatalog;
 import com.management.inventory.yjinventorymanagement.domain.Ingredient.*;
 import com.management.inventory.yjinventorymanagement.domain.Inventory;
-import com.management.inventory.yjinventorymanagement.domain.Item;
 import com.management.inventory.yjinventorymanagement.domain.Menu;
+import com.management.inventory.yjinventorymanagement.domain.Person;
+import com.management.inventory.yjinventorymanagement.service.InventoryService;
+import com.management.inventory.yjinventorymanagement.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -35,9 +36,12 @@ public class DBInitialization {
     static class InitializationService {
 
         private final EntityManager em;
+        private final PurchaseService purchaseService;
+        private final InventoryService inventoryService;
 
         public void initializeDB() {
-            Inventory inventory = new Inventory();
+            Person customer = new Person("Yongju", "Kwon", "yongjuKwon@gmail.com");
+            em.persist(customer);
 
             // Create ingredients
             Ingredient bacon = new Bacon("bacon", 39L);
@@ -54,16 +58,19 @@ public class DBInitialization {
             for (Ingredient i: ingredientList) {
                 em.persist(i);
                 int qty = randomGenerator.nextInt(20) + 10;
-                inventory.addStock(i, qty);
+                inventoryService.addStock(i.getName(), qty);
+                log.info("{} of {} is stored in inventory", qty, i.getName());
             }
-            em.persist(inventory);
 
             // Add menu
-            Recipe[] recipes = Recipe.values();
-            for (Recipe r: recipes) {
-                Menu menu = new Menu(r.getFormattedName(), r.getDescription());
+            ItemCatalog[] itemCatalogs = ItemCatalog.values();
+            for (ItemCatalog ic: itemCatalogs) {
+                Menu menu = new Menu(ic.getFormattedName(), ic.getDescription(), ic.getPriceInCent());
                 em.persist(menu);
             }
+
+            // Create purchase
+            purchaseService.purchase(customer, "hamburger", "cheese burger", "big mac");
         }
     }
 }

@@ -26,7 +26,7 @@ public class Person {
     private String email;
 
     @OneToMany(mappedBy = "person")
-    private List<PurchaseHistory> purchaseHistories = new ArrayList<>();
+    private List<Purchase> purchaseHistories = new ArrayList<>();
 
     @OneToMany(mappedBy = "person")
     private List<Order> orders = new ArrayList<>();
@@ -39,3 +39,4 @@ public class Person {
         this.email = email;
     }
 }
+

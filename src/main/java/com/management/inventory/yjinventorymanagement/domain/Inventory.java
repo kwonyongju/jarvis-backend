@@ -1,14 +1,12 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
-import com.management.inventory.yjinventorymanagement.exception.NotEnoughStockException;
+import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table
+@Getter
 public class Inventory {
 
     @Id
@@ -16,27 +14,18 @@ public class Inventory {
     @Column(name = "inventory_id")
     private Long Id;
 
-    @ElementCollection
-    @CollectionTable(name = "ingredient_stock", joinColumns = { @JoinColumn(name = "inventory_id")})
-    @MapKeyColumn(name = "ingredient")
-    @Column(name = "stock_quantity")
-    private Map<String, Integer> stock = new HashMap<>();
+    @NotNull
+    private String ingredientName;
+    private int stockQuantity;
 
-    public void addStock(Ingredient ingredient, int qty) {
-        String iName = ingredient.getName();
-        if (stock.containsKey(iName))
-            stock.put(iName, stock.get(iName) + qty);
+    protected Inventory() { }
 
-        if (!stock.containsKey(iName))
-            stock.put(iName, qty);
+    public Inventory(@NotNull String ingredientName, int stockQuantity) {
+        this.ingredientName = ingredientName;
+        this.stockQuantity = stockQuantity;
     }
 
-    public void removeStock(String ingredientName) {
-        int stockQuantity = stock.get(ingredientName);
-
-        if (--stockQuantity < 0)
-            throw new NotEnoughStockException(ingredientName + " is out of stock!");
-
-        stock.put(ingredientName, stockQuantity);
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }

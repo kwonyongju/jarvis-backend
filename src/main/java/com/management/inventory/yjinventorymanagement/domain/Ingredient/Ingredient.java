@@ -30,10 +30,6 @@ public abstract class Ingredient {
     private String name;
     private Long priceInCent;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "inventory_id")
-    private Inventory inventory;
-
     public Ingredient() {}
 
     public Ingredient(String name, Long priceInCent) {
