@@ -11,7 +11,7 @@ public class IngredientService {
 
     private final IngredientRepository ingredientRepository;
 
-    public Long addIngredient(Ingredient ingredient) {
+    public Long add(Ingredient ingredient) {
         Ingredient ingredientSaved = ingredientRepository.save(ingredient);
 
         return ingredientSaved.getId();

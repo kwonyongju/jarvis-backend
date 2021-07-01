@@ -5,7 +5,9 @@ import com.management.inventory.yjinventorymanagement.domain.Ingredient.*;
 import com.management.inventory.yjinventorymanagement.domain.Inventory;
 import com.management.inventory.yjinventorymanagement.domain.Menu;
 import com.management.inventory.yjinventorymanagement.domain.Person;
+import com.management.inventory.yjinventorymanagement.service.IngredientService;
 import com.management.inventory.yjinventorymanagement.service.InventoryService;
+import com.management.inventory.yjinventorymanagement.service.MenuService;
 import com.management.inventory.yjinventorymanagement.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +38,10 @@ public class DBInitialization {
     static class InitializationService {
 
         private final EntityManager em;
-        private final PurchaseService purchaseService;
+        private final IngredientService ingredientService;
         private final InventoryService inventoryService;
+        private final MenuService menuService;
+        private final PurchaseService purchaseService;
 
         public void initializeDB() {
             Person customer = new Person("Yongju", "Kwon", "yongjuKwon@gmail.com");
@@ -56,7 +60,7 @@ public class DBInitialization {
             // Stock ingredients
             Random randomGenerator = new Random();
             for (Ingredient i: ingredientList) {
-                em.persist(i);
+                ingredientService.add(i);
                 int qty = randomGenerator.nextInt(20) + 10;
                 inventoryService.addStock(i.getName(), qty);
                 log.info("{} of {} is stored in inventory", qty, i.getName());
@@ -65,8 +69,7 @@ public class DBInitialization {
             // Add menu
             ItemCatalog[] itemCatalogs = ItemCatalog.values();
             for (ItemCatalog ic: itemCatalogs) {
-                Menu menu = new Menu(ic.getFormattedName(), ic.getDescription(), ic.getPriceInCent());
-                em.persist(menu);
+                menuService.add(new Menu(ic.getFormattedName(), ic.getDescription(), ic.getPriceInCent()));
             }
 
             // Create purchase

@@ -1,8 +1,11 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
 public class Menu {
 
     @javax.persistence.Id
