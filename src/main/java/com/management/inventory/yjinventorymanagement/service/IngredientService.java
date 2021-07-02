@@ -5,6 +5,9 @@ import com.management.inventory.yjinventorymanagement.repository.IngredientRepos
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class IngredientService {
@@ -15,5 +18,13 @@ public class IngredientService {
         Ingredient ingredientSaved = ingredientRepository.save(ingredient);
 
         return ingredientSaved.getId();
+    }
+
+    public void add(Ingredient... ingredients) {
+        ingredientRepository.saveAll(Arrays.asList(ingredients));
+    }
+
+    public List<Ingredient> findAll() {
+        return ingredientRepository.findAll();
     }
 }
