@@ -1,26 +1,33 @@
 package com.management.inventory.yjinventorymanagement.service;
 
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
 import com.management.inventory.yjinventorymanagement.domain.Inventory;
-import com.management.inventory.yjinventorymanagement.exception.IngredientNotExistException;
 import com.management.inventory.yjinventorymanagement.exception.NotEnoughStockException;
 import com.management.inventory.yjinventorymanagement.repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
 
     public void addStock(String ingredientName, int qty) {
-        Inventory inventoryFound =
-                inventoryRepository.findByIngredientName(ingredientName) == null
-                        ? new Inventory(ingredientName, qty)
-                        : inventoryRepository.findByIngredientName(ingredientName);
+        List<Inventory> inventory = inventoryRepository.findAll();
 
-        inventoryFound.setStockQuantity(inventoryFound.getStockQuantity() + qty);
+        Inventory inventoryFound = inventory.stream()
+                .filter(i -> i.getIngredientName() == ingredientName)
+                .findAny()
+                .orElse(null);
+
+        if (inventoryFound == null)
+            inventoryFound = new Inventory(ingredientName, qty);
+        else
+            inventoryFound.setStockQuantity(inventoryFound.getStockQuantity() + qty);
 
         inventoryRepository.save(inventoryFound);
     }
@@ -36,5 +43,9 @@ public class InventoryService {
         inventoryRepository.save(inventoryFound);
     }
 
+    public int getStockQuantity(String ingredientName) {
+        Inventory ingredientFound = inventoryRepository.findByIngredientName(ingredientName);
 
+        return ingredientFound.getStockQuantity();
+    }
 }
