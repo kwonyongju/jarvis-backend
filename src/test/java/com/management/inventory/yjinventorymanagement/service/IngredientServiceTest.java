@@ -24,7 +24,7 @@ class IngredientServiceTest {
         Ingredient tomato = new Tomato("tomato", 35L);
         ingredientService.add(bacon, bun, cheese, lettuce, patty, tomato);
 
-        List<Ingredient> ingredients = ingredientService.findAll();
+        List<Ingredient> ingredients = ingredientService.getAllIngredients();
 
         Assertions.assertThat(ingredients.size()).isSameAs(6);
     }

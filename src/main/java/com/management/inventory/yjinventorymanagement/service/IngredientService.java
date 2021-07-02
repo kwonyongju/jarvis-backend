@@ -24,7 +24,7 @@ public class IngredientService {
         ingredientRepository.saveAll(Arrays.asList(ingredients));
     }
 
-    public List<Ingredient> findAll() {
+    public List<Ingredient> getAllIngredients() {
         return ingredientRepository.findAll();
     }
 }

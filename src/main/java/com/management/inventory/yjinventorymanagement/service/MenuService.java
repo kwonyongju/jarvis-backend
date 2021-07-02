@@ -5,6 +5,8 @@ import com.management.inventory.yjinventorymanagement.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MenuService {
@@ -15,5 +17,9 @@ public class MenuService {
         Menu menuSaved = menuRepository.save(menu);
 
         return menuSaved.getId();
+    }
+
+    public List<Menu> getAllMenu() {
+        return menuRepository.findAll();
     }
 }

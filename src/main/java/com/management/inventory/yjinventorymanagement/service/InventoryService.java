@@ -34,7 +34,6 @@ public class InventoryService {
 
     public void removeStock(String ingredientName) {
         Inventory inventoryFound = inventoryRepository.findByIngredientName(ingredientName);
-
         inventoryFound.setStockQuantity(inventoryFound.getStockQuantity() - 1);
 
         if (inventoryFound.getStockQuantity() < 0)
