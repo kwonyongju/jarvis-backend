@@ -2,7 +2,6 @@ package com.management.inventory.yjinventorymanagement;
 
 import com.management.inventory.yjinventorymanagement.constant.ItemCatalog;
 import com.management.inventory.yjinventorymanagement.domain.Ingredient.*;
-import com.management.inventory.yjinventorymanagement.domain.Inventory;
 import com.management.inventory.yjinventorymanagement.domain.Menu;
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import com.management.inventory.yjinventorymanagement.service.IngredientService;
@@ -59,7 +58,7 @@ public class DBInitialization {
 
             // Stock ingredients
             Random randomGenerator = new Random();
-            for (Ingredient i: ingredientList) {
+            for (Ingredient i : ingredientList) {
                 ingredientService.add(i);
                 int qty = randomGenerator.nextInt(20) + 10;
                 inventoryService.addStock(i.getName(), qty);
@@ -68,12 +67,12 @@ public class DBInitialization {
 
             // Add menu
             ItemCatalog[] itemCatalogs = ItemCatalog.values();
-            for (ItemCatalog ic: itemCatalogs) {
+            for (ItemCatalog ic : itemCatalogs) {
                 menuService.add(new Menu(ic.getFormattedName(), ic.getDescription(), ic.getPriceInCent()));
             }
 
             // Create purchase
-            purchaseService.purchase(customer, "hamburger", "cheese burger", "big mac");
+//            purchaseService.purchase(customer, "hamburger", "cheese burger", "big mac");
         }
     }
 }

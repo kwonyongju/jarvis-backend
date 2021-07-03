@@ -25,12 +25,12 @@ public class PurchaseService {
         List<Item> items = new ArrayList<>();
 
         // order
-        for (String itemName: itemNames)
+        for (String itemName : itemNames)
             items.add(itemService.createItem(itemName));
 
         Purchase purchase = Purchase.orderItems(customer, items);
-        purchaseRepository.save(purchase);
 
+        Purchase purchase1 = purchaseRepository.save(purchase);
         return purchase.getId();
     }
 

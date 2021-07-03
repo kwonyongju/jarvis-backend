@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("Cheese")
-public class Cheese extends Ingredient{
+public class Cheese extends Ingredient {
     public Cheese(String name, Long priceInCent) {
         super(name, priceInCent);
     }

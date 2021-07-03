@@ -9,4 +9,8 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+
+//    public Long addStock(Person person, Ingredient ingredient, int count) {
+//        Order order = new Order(person, ingredient, 100, LocalDateTime.now());
+//    }
 }

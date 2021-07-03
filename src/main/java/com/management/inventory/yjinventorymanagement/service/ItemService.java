@@ -19,11 +19,12 @@ public class ItemService {
         String enumName = ItemCatalog.convertToEnumCase(itemName);
         ItemCatalog itemCatalog = ItemCatalog.valueOf(enumName);
 
-        for (String ingredientName: itemCatalog.getIngredients()) {
+        for (String ingredientName : itemCatalog.getIngredients()) {
             inventoryService.removeStock(ingredientName);
         }
 
         Item item = new Item(itemName, itemCatalog.getPriceInCent(), Arrays.asList(itemCatalog.getIngredients()));
+        itemRepository.save(item);
 
         return item;
     }

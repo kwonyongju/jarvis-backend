@@ -22,25 +22,18 @@ public class Purchase {
     @JoinColumn(name = "person_id")
     private Person person;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "purchase")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "purchase")
     private List<Item> items = new ArrayList<>();
 
     private Long totalPriceInCent;
     private LocalDateTime purchaseDate;
 
-    protected Purchase() { }
+    protected Purchase() {
+    }
 
     public Purchase(Person person, List<Item> items) {
         this.person = person;
         this.items = items;
-    }
-
-    private void setTotalPriceInCent(Long totalPriceInCent) {
-        this.totalPriceInCent = totalPriceInCent;
-    }
-
-    private void setPurchaseDate(LocalDateTime purchaseDate) {
-        this.purchaseDate = purchaseDate;
     }
 
     public static Purchase orderItems(Person person, List<Item> items) {
@@ -51,5 +44,13 @@ public class Purchase {
         purchase.setPurchaseDate(LocalDateTime.now());
 
         return purchase;
+    }
+
+    private void setTotalPriceInCent(Long totalPriceInCent) {
+        this.totalPriceInCent = totalPriceInCent;
+    }
+
+    private void setPurchaseDate(LocalDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 }
