@@ -30,7 +30,7 @@ public class PurchaseService {
 
         Purchase purchase = Purchase.orderItems(customer, items);
 
-        Purchase purchase1 = purchaseRepository.save(purchase);
+        purchaseRepository.save(purchase);
         return purchase.getId();
     }
 
