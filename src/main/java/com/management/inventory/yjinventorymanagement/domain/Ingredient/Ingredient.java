@@ -1,5 +1,6 @@
 package com.management.inventory.yjinventorymanagement.domain.Ingredient;
 
+import com.management.inventory.yjinventorymanagement.domain.Item;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -22,6 +23,10 @@ public abstract class Ingredient {
     private String name;
     private Long priceInCent;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
+
     public Ingredient() {
     }
 
@@ -29,4 +34,6 @@ public abstract class Ingredient {
         this.name = name;
         this.priceInCent = priceInCent;
     }
+
+
 }

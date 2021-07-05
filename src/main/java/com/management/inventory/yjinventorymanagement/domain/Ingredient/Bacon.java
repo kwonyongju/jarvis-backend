@@ -11,7 +11,7 @@ public class Bacon extends Ingredient {
         super(name, priceInCent);
     }
 
-    protected Bacon() {
+    public Bacon() {
 
     }
 }

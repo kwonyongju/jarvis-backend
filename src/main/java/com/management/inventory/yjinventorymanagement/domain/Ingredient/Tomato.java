@@ -10,7 +10,7 @@ public class Tomato extends Ingredient {
         super(name, priceInCent);
     }
 
-    protected Tomato() {
+    public Tomato() {
 
     }
 }

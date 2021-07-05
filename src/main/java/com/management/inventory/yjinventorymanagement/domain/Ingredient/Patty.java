@@ -10,7 +10,7 @@ public class Patty extends Ingredient {
         super(name, priceInCent);
     }
 
-    protected Patty() {
+    public Patty() {
 
     }
 }

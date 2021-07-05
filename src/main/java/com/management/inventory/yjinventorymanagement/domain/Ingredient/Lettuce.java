@@ -10,7 +10,7 @@ public class Lettuce extends Ingredient {
         super(name, priceInCent);
     }
 
-    protected Lettuce() {
+    public Lettuce() {
 
     }
 }

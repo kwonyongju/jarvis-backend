@@ -10,7 +10,7 @@ public class Cheese extends Ingredient {
         super(name, priceInCent);
     }
 
-    protected Cheese() {
+    public Cheese() {
 
     }
 }

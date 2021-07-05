@@ -10,7 +10,6 @@ public class Bun extends Ingredient {
         super(name, priceInCent);
     }
 
-    protected Bun() {
-
+    public Bun() {
     }
 }
