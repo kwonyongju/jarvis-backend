@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
-@Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InventoryServiceTest {
 
@@ -33,45 +32,39 @@ class InventoryServiceTest {
         customer = new Person("Yongju", "Kwon", "yongjuKwon@gmail.com");
         personService.register(customer);
 
-        inventoryService.addStock("bun", 30);
-        inventoryService.addStock("cheese", 50);
-
+        inventoryService.addStock("Bun", 30);
+        inventoryService.addStock("Cheese", 50);
+        inventoryService.addStock("Tomato", 50);
     }
 
     @Test
-    void addNewIngredientStock() {
-        inventoryService.addStock("bacon", 20);
+    void addIngredientToStock() {
+        inventoryService.addStock("Bacon", 20);
 
-        assertThat(inventoryService.getStockQuantity("bacon")).isSameAs(20);
-    }
-
-    @Test
-    void addStockToExistingIngredient() {
-        inventoryService.addStock("bun", 70);
-
-        assertThat(inventoryService.getStockQuantity("bun")).isSameAs(100);
+        assertThat(inventoryService.getStockQuantity("Bacon")).isSameAs(20);
     }
 
     @Test
     void removeStock() {
-        inventoryService.removeStock("cheese");
+        inventoryService.removeStock("Tomato");
 
-        assertThat(inventoryService.getStockQuantity("cheese")).isSameAs(49);
+        assertThat(inventoryService.getStockQuantity("Tomato")).isSameAs(49);
     }
 
     @Test
+    @Transactional
     void stockIsRemovedAfterPurchase() {
-        inventoryService.addStock("lettuce", 30);
-        inventoryService.addStock("patty", 30);
+        inventoryService.addStock("Lettuce", 30);
+        inventoryService.addStock("Patty", 30);
 
         purchaseService.purchase(customer, "big mac");
         // big mac -> "bun", "lettuce", "cheese", "patty", "bun", "lettuce", "cheese", "patty", "bun"
 
         assertAll("inventory stock is properly removed after purchase",
-                () -> assertThat(inventoryService.getStockQuantity("bun")).isSameAs(27),
-                () -> assertThat(inventoryService.getStockQuantity("lettuce")).isSameAs(28),
-                () -> assertThat(inventoryService.getStockQuantity("cheese")).isSameAs(48),
-                () -> assertThat(inventoryService.getStockQuantity("patty")).isSameAs(28)
+                () -> assertThat(inventoryService.getStockQuantity("Bun")).isSameAs(27),
+                () -> assertThat(inventoryService.getStockQuantity("Lettuce")).isSameAs(28),
+                () -> assertThat(inventoryService.getStockQuantity("Cheese")).isSameAs(48),
+                () -> assertThat(inventoryService.getStockQuantity("Patty")).isSameAs(28)
         );
     }
 }
