@@ -39,7 +39,7 @@ public class Purchase {
     public static Purchase orderItems(Person person, List<Item> items) {
         Purchase purchase = new Purchase(person, items);
 
-        Long totalPrice = items.stream().map(i -> i.getPriceInCent()).reduce(0L, Long::sum);
+        Long totalPrice = items.stream().map(Item::getPriceInCent).reduce(0L, Long::sum);
         purchase.setTotalPriceInCent(totalPrice);
         purchase.setPurchaseDate(LocalDateTime.now());
 

@@ -20,7 +20,7 @@ public class InventoryService {
         List<Inventory> inventory = inventoryRepository.findAll();
 
         Inventory inventoryFound = inventory.stream()
-                .filter(i -> i.getIngredientName() == ingredientName)
+                .filter(i -> i.getIngredientName().equals(ingredientName))
                 .findAny()
                 .orElse(null);
 

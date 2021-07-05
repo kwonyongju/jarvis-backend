@@ -32,7 +32,6 @@ public class ItemService {
 
         Item item = new Item(itemName, itemCatalog.getPriceInCent(), ingredients);
         itemRepository.save(item);
-
         return item;
     }
 }

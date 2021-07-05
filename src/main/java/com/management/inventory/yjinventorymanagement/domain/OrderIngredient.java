@@ -1,6 +1,7 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
 import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
+import com.management.inventory.yjinventorymanagement.domain.Ingredient.IngredientFactory;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -20,9 +21,11 @@ public class OrderIngredient {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "ingredient_id")
-    private Ingredient ingredient;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "ingredient_id")
+//    private Ingredient ingredient;
+
+    private String ingredient;
 
     @Setter
     private Long totalPriceInCent;
@@ -31,13 +34,19 @@ public class OrderIngredient {
     protected OrderIngredient() {
     }
 
-    public OrderIngredient(Ingredient ingredient, int quantity) {
+    public OrderIngredient(String ingredient, int quantity) {
         this.ingredient = ingredient;
         this.quantity = quantity;
     }
 
-    public static OrderIngredient createOrderIngredient(Ingredient ingredient, int quantity) {
-        OrderIngredient orderIngredient = new OrderIngredient(ingredient, quantity);
+//    public OrderIngredient(Ingredient ingredient, int quantity) {
+//        this.ingredient = ingredient;
+//        this.quantity = quantity;
+//    }
+
+    public static OrderIngredient createOrderIngredient(String ingredientName, int quantity) throws Exception {
+        OrderIngredient orderIngredient = new OrderIngredient(ingredientName, quantity);
+        Ingredient ingredient = IngredientFactory.createIngredient(ingredientName);
         orderIngredient.setTotalPriceInCent(ingredient.getPriceInCent() * quantity);
 
         return orderIngredient;

@@ -1,6 +1,5 @@
 package com.management.inventory.yjinventorymanagement.service;
 
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
 import com.management.inventory.yjinventorymanagement.domain.Order;
 import com.management.inventory.yjinventorymanagement.domain.OrderIngredient;
 import com.management.inventory.yjinventorymanagement.domain.Person;
@@ -21,15 +20,15 @@ public class OrderService {
     private final PersonRepository personRepository;
     private final OrderRepository orderRepository;
 
-    public Long order(Long managerId, Map<Ingredient, Integer> ingredients) {
+    public Long order(Long managerId, Map<String, Integer> ingredients) throws Exception {
         Person manager = personRepository.getById(managerId);
 
         List<OrderIngredient> orderIngredients = new ArrayList<>();
-        for (Ingredient i : ingredients.keySet()) {
+        for (String i : ingredients.keySet()) {
             int quantity = ingredients.get(i);
             orderIngredients.add(OrderIngredient.createOrderIngredient(i, quantity));
             // Add stock to inventory
-            inventoryService.addStock(i.getName(), quantity);
+            inventoryService.addStock(i, quantity);
         }
 
         Order order = Order.createOrder(manager, orderIngredients);
