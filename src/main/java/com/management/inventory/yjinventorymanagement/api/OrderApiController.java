@@ -33,13 +33,13 @@ public class OrderApiController {
 
 
     @GetMapping("/api/v1/orders")
-    public GetOrderResponse getOrders(@RequestParam Long id) {
+    public GetResponse getOrders(@RequestParam Long id) {
         List<Order> orders = orderQueryRepository.findAllByPersonId(id);
 
         List<OrderQueryDto> result = orders.stream()
                 .map(OrderQueryDto::new).distinct().collect(Collectors.toList());
 
-        return new GetOrderResponse(result.size(), result);
+        return new GetResponse(result.size(), result);
     }
 
     @PostMapping("api/v1/order")
@@ -77,13 +77,6 @@ public class OrderApiController {
     static class IngredientRequest {
         private String ingredient;
         private int quantity;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class GetOrderResponse<T> {
-        private int count;
-        private T data;
     }
 
     @Data
