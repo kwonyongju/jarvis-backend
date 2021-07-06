@@ -8,9 +8,7 @@ import com.management.inventory.yjinventorymanagement.repository.PersonRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -20,16 +18,11 @@ public class OrderService {
     private final PersonRepository personRepository;
     private final OrderRepository orderRepository;
 
-    public Long order(Long managerId, Map<String, Integer> ingredients) throws Exception {
+    public Long order(Long managerId, List<OrderIngredient> orderIngredients) {
         Person manager = personRepository.getById(managerId);
 
-        List<OrderIngredient> orderIngredients = new ArrayList<>();
-        for (String i : ingredients.keySet()) {
-            int quantity = ingredients.get(i);
-            orderIngredients.add(OrderIngredient.createOrderIngredient(i, quantity));
-            // Add stock to inventory
-            inventoryService.addStock(i, quantity);
-        }
+        for (OrderIngredient oi : orderIngredients)
+            inventoryService.addStock(oi.getIngredient().getName(), oi.getQuantity());
 
         Order order = Order.createOrder(manager, orderIngredients);
         orderRepository.save(order);

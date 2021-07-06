@@ -50,5 +50,6 @@ public class Order {
 
     public void addOrderIngredient(OrderIngredient orderIngredient) {
         this.orderIngredients.add(orderIngredient);
+        orderIngredient.setOrder(this);
     }
 }
