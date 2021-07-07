@@ -24,7 +24,7 @@ public class MenuApiController {
     public GetResponse getMenu() {
         List<MenuDto> menuList = menuService.getAllMenu()
                 .stream()
-                .map(m -> new MenuDto(m.getItemName(), m.getItemDescription(), m.getPriceInCent()))
+                .map(m -> new MenuDto(m.getItemName(), m.getItemDescription(), m.getIngredients(), m.getPriceInCent()))
                 .collect(Collectors.toList());
 
         return new GetResponse(menuList.size(), menuList);
@@ -35,6 +35,7 @@ public class MenuApiController {
         Long menuId = menuService.add(
                 request.getItemName(),
                 request.getItemDescription(),
+                request.getIngredients(),
                 Long.parseLong(request.getPriceInCent())
         );
 
@@ -47,6 +48,7 @@ public class MenuApiController {
     static class MenuDto {
         private String itemName;
         private String itemDescription;
+        private List<String> ingredients;
         private Long priceInCent;
     }
 
@@ -56,6 +58,8 @@ public class MenuApiController {
         private String itemName;
         @NotEmpty
         private String itemDescription;
+        @NotEmpty
+        private List<String> ingredients;
         @NotEmpty
         private String priceInCent;
     }

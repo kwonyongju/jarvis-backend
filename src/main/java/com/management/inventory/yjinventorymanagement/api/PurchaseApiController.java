@@ -42,13 +42,6 @@ public class PurchaseApiController {
         return new GetResponse(result.size(), result);
     }
 
-    private List<PurchaseQueryDto> convertPurchaseToDto(List<Purchase> purchases) {
-        return purchases
-                .stream()
-                .map(PurchaseQueryDto::new)
-                .collect(Collectors.toList());
-    }
-
     @PostMapping("/api/v1/purchase")
     public CreatePurchaseResponse createPurchase(@RequestBody @Valid CreatePurchaseRequest request) {
         Person customer = personService.findById(Long.parseLong(request.getPersonId()));
@@ -65,6 +58,13 @@ public class PurchaseApiController {
         Long purchaseId = purchaseService.purchase(customer.getId(), purchaseItems);
 
         return new CreatePurchaseResponse(purchaseId);
+    }
+
+    private List<PurchaseQueryDto> convertPurchaseToDto(List<Purchase> purchases) {
+        return purchases
+                .stream()
+                .map(PurchaseQueryDto::new)
+                .collect(Collectors.toList());
     }
 
     @Data

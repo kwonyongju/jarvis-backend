@@ -13,9 +13,9 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
 
-    public Long add(String itemName, String itemDescription, Long priceInCent) {
+    public Long add(String itemName, String itemDescription, List<String> ingredients, Long priceInCent) {
         Menu menuSaved = menuRepository
-                .save(new Menu(itemName, itemDescription, priceInCent));
+                .save(new Menu(itemName, itemDescription, ingredients, priceInCent));
 
         return menuSaved.getId();
     }

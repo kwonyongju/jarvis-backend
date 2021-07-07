@@ -2,6 +2,10 @@ package com.management.inventory.yjinventorymanagement.constant;
 
 import com.management.inventory.yjinventorymanagement.domain.Ingredient.*;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum ItemCatalog {
     HAMBURGER("The original burger starts with a 100% pure beef burger seasoned with just a pinch of salt and pepper.", 299L, new Bun(), new Patty(), new Bun()),
     CHEESE_BURGER("Our simple, classic cheeseburger begins with a 100% pure beef burger seasoned with just a pinch of salt and pepper.", 499L, new Bun(), new Cheese(), new Patty(), new Bun()),
@@ -30,6 +34,14 @@ public enum ItemCatalog {
 
     public Ingredient[] getIngredients() {
         return ingredients;
+    }
+
+    public List<String> getIngredientsList() {
+        return Arrays.asList(ingredients)
+                .stream()
+                .map(i -> i.getClass().getSimpleName())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     public Long getPriceInCent() {
