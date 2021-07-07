@@ -15,3 +15,7 @@ export const c_light_brown = css`#f8e6bd`;
 export const c_brown = css`#c6b897`;
 export const c_dim_brown = css`#948a71`;
 export const c_dark_brown = css`#635c4b`;
+
+export const c_yellow = css`#ffff00`;
+export const c_dim_yellow = css`#ffce47`;
+export const c_dark_yellow = css`#fcba03`;
