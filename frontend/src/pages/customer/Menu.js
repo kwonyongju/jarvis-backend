@@ -6,10 +6,11 @@ import styled from "styled-components";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
+import { c_dark_yellow } from "../../utils/colors";
 import Table from "../../components/elements/Table/Table";
 import Cart from "./Cart";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_MENU_URL;
 
 const Root = styled.div`
   padding: 20px 20px;
@@ -38,7 +39,7 @@ const Menu = () => {
   const labels = ["name", "description", "ingredients", "price"];
 
   useEffect(() => {
-    axios.get(`${API_URL}/menu`).then((response) => {
+    axios.get(API_URL).then((response) => {
       const menu = response.data.data.map((item) => {
         return {
           name: item.itemName,
@@ -70,16 +71,17 @@ const Menu = () => {
     <Root>
       <Title>Menu</Title>
       <Table
-        buttonLabel="Order"
+        buttonColor={c_dark_yellow}
+        buttonLabel="Add to Cart"
         data={menu}
         headers={menuTableHeaders}
         inputMatrix={inputMatrix}
         labels={labels}
         onChange={handleInputChange}
-        onOrder={handleOnOrder.bind(this)}
+        onClick={handleOnOrder.bind(this)}
       />
       <hr />
-      <Cart inputMatrix={inputMatrix} />
+      <Cart inputMatrix={inputMatrix} onChange={handleInputChange} />
     </Root>
   ) : (
     <SpinWrapper>

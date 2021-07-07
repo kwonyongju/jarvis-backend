@@ -3,12 +3,14 @@ import { createGlobalStyle } from "styled-components";
 import { c_black } from "../utils/colors";
 
 export const GlobalStyle = createGlobalStyle`
+
   html {
     margin: 0;
   }
 
   body {
-    font-family: Cantarell, sans-serif;
+    font-family: 'Encode Sans SC', sans-serif;
+    font-family: 'Lato', sans-serif;
     letter-spacing: 0.5px;
     color: ${c_black};
   }

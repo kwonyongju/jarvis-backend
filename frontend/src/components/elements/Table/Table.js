@@ -23,24 +23,27 @@ const TableData = styled.td`
 `;
 
 const TableButton = styled.button`
-  background-color: ${c_dark_yellow};
+  background-color: ${(props) => props.buttonColor};
   border: transparent;
   border-radius: 15px;
   height: 30px;
   cursor: pointer;
-  width: 80px;
+  width: 100px;
 `;
 
 const Table = ({
+  buttonColor,
   buttonLabel,
   data,
   headers,
-  inputMatrix,
   labels,
-  onChange,
-  onOrder,
+  last,
+  onClick,
   tdHeight,
 }) => {
+  const buttonStyleProps = {
+    buttonColor: buttonColor,
+  };
   const tdStyleProps = {
     tdHeight: tdHeight,
   };
@@ -62,9 +65,12 @@ const Table = ({
                 {item[label]}
               </TableData>
             ))}
-            {buttonLabel ? (
+            {item.name && buttonLabel ? (
               <TableData {...tdStyleProps}>
-                <TableButton onClick={() => onOrder({ itemIndex })}>
+                <TableButton
+                  {...buttonStyleProps}
+                  onClick={() => onClick({ itemIndex })}
+                >
                   {buttonLabel}
                 </TableButton>
               </TableData>

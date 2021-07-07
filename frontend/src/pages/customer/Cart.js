@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
+
+import axios from "axios";
 import styled from "styled-components";
+import { Modal } from "antd";
 
 import Table from "../../components/elements/Table/Table";
-import { c_brown } from "../../utils/colors";
+import { c_brown, c_light_red } from "../../utils/colors";
+
+const API_URL = process.env.REACT_APP_API_PURCHASE_URL;
 
 const Root = styled.div`
   margin-top: 2vh;
@@ -26,16 +31,59 @@ const OrderButton = styled.button`
   width: 200px;
 `;
 
-const Cart = ({ inputMatrix }) => {
+const Cart = ({ inputMatrix, onChange }) => {
   const [data, setData] = useState([]);
-  console.log(inputMatrix.items);
+  const [modalVisible, setModalVisible] = useState(false);
+  const cartTableHeaders = [
+    "",
+    "Item",
+    "Quantity",
+    "Price",
+    "Tax (5%)",
+    "TotalPrice",
+  ];
+  const labels = ["index", "name", "quantity", "price", "tax", "totalPrice"];
 
   useEffect(() => {
-    formatTableData(inputMatrix.items);
-  }, [inputMatrix.items]);
+    if (inputMatrix.items) formatTableData(inputMatrix.items);
+  }, [inputMatrix]);
 
-  const cartTableHeaders = ["#", "Item", "Quantity", "Price", "TotalPrice"];
-  const labels = ["index", "name", "quantity", "price", "totalPrice"];
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
+  const handleOnOrder = () => {
+    const body = JSON.parse(constructRequestBody());
+    axios.post(API_URL, body).then((response) => {
+      console.log(response);
+      if (response.status === 200 && response.data.id > 0) {
+        setData([]);
+        onChange({ name: "items", value: [] });
+      }
+
+      if (response.data.id === -1) {
+        toggleModal();
+      }
+    });
+  };
+
+  const constructRequestBody = () => {
+    const items = [];
+
+    data.forEach((item, index) => {
+      // except the last row (total price)
+      if (index !== data.length - 1)
+        items.push({
+          itemName: item.name,
+          quantity: item.quantity,
+        });
+    });
+
+    return JSON.stringify({
+      personId: inputMatrix.personId,
+      items: items,
+    });
+  };
 
   const formatTableData = (items) => {
     const map = new Map();
@@ -57,9 +105,10 @@ const Cart = ({ inputMatrix }) => {
         name: item.name,
         quantity: value,
         price: price,
+        tax: (price * 0.05).toFixed(2),
       });
 
-      totalPrice += parseFloat(price);
+      totalPrice += parseFloat(price) * 1.05;
     });
 
     temp.push({
@@ -69,18 +118,55 @@ const Cart = ({ inputMatrix }) => {
     setData(temp);
   };
 
+  const handleOnRemove = ({ itemIndex }) => {
+    const remove = inputMatrix.items.find(
+      (item) => item.name === data[itemIndex].name
+    );
+    const index = inputMatrix.items.indexOf(remove);
+    inputMatrix.items.splice(index, 1);
+
+    onChange({
+      name: "items",
+      value: inputMatrix.items,
+    });
+  };
+
+  console.log(inputMatrix.items);
+  console.log(data);
   return (
     <Root>
       <Title>Cart</Title>
       <Table
+        buttonColor={c_light_red}
+        buttonLabel="Remove"
         headers={cartTableHeaders}
         data={data}
         labels={labels}
+        last={data.length - 1}
         tdHeight="20px"
+        onClick={handleOnRemove.bind(this)}
       />
       <ButtonWrapper>
-        <OrderButton>Place Order</OrderButton>
+        <OrderButton onClick={() => handleOnOrder()}>Place Order</OrderButton>
       </ButtonWrapper>
+      <Modal
+        title="Some ingredients are out of stock"
+        centered
+        visible={modalVisible}
+        onOk={() => toggleModal()}
+        onCancel={() => toggleModal()}
+      >
+        <p>
+          We are very sorry, we just had a mukbang show with a Youtuber. He has
+          eaten all of our burgers..
+          <br />
+          <br />
+          Please come back next time..
+          <br />
+          <br />* If you ask our manager to stock those, it will be delivered
+          right away!
+        </p>
+      </Modal>
     </Root>
   );
 };

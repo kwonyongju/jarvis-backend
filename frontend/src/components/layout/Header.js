@@ -8,7 +8,7 @@ const Root = styled.div`
   justify-content: center;
   max-width: 1080px;
 
-  border: 2px solid blue;
+  border: 1px solid blue;
 `;
 
 const Header = ({ children }) => {
