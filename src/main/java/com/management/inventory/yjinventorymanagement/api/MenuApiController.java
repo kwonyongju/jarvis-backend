@@ -24,7 +24,13 @@ public class MenuApiController {
     public GetResponse getMenu() {
         List<MenuDto> menuList = menuService.getAllMenu()
                 .stream()
-                .map(m -> new MenuDto(m.getItemName(), m.getItemDescription(), m.getIngredients(), m.getPriceInCent()))
+                .map(
+                        m -> new MenuDto(
+                                m.getItemName(),
+                                m.getItemDescription(),
+                                m.getIngredients().stream().distinct().collect(Collectors.toList()),
+                                m.getPriceInCent())
+                )
                 .collect(Collectors.toList());
 
         return new GetResponse(menuList.size(), menuList);
