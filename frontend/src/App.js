@@ -2,22 +2,33 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Content from "./components/layout/Content";
+import Header from "./components/layout/Header";
+import Navbar from "./components/nav/Navbar";
 import { GlobalStyle } from "./constants/global";
-import MainPage from "./components/MainPage";
+import Main from "./pages/Main";
+import Customer from "./pages/Customer";
+import Manager from "./pages/Manager";
+import { NAV_ITEMS } from "./constants/navItems";
 
 const App = () => {
   return (
     <>
       <Router>
         <GlobalStyle />
-        <Route exact path="/">
-          {/* <Home /> */}
-        </Route>
+        <Header>
+          <Navbar navLeft={"Home"} navItems={NAV_ITEMS} />
+        </Header>
         <Content>
-          <MainPage />
           <Switch>
-            <Route path="/customer">{/* <Projects /> */}</Route>
-            <Route path="/manager">{/* <Resume /> */}</Route>
+            <Route exact path="/">
+              <Main />
+            </Route>
+            <Route path="/customer">
+              <Customer />
+            </Route>
+            <Route path="/manager">
+              <Manager />
+            </Route>
           </Switch>
         </Content>
       </Router>

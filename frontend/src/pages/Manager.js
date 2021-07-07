@@ -3,6 +3,8 @@ import styled from "styled-components";
 
 const Root = styled.div``;
 
-export const Customer = () => {
-  return <Root></Root>;
+const Manager = () => {
+  return <Root>Hi this is manager page</Root>;
 };
+
+export default Manager;

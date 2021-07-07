@@ -11,9 +11,17 @@ const Root = styled.div`
   ${FormatStyles}
 `;
 
-const Row = ({ children, justifyCenter, marginTopDouble }) => {
+const Row = ({
+  children,
+  justifyCenter,
+  marginBottom,
+  marginBottomDouble,
+  marginTopDouble,
+}) => {
   const styleProps = {
     justifyCenter: justifyCenter,
+    marginBottom: marginBottom,
+    marginBottomDouble: marginBottomDouble,
     marginTopDouble: marginTopDouble,
   };
 

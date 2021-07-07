@@ -1,1 +1,3 @@
-export const PROJECT_DESCRIPTION = `Inventory Management \n blabla`;
+export const PROJECT_TITLE = `Inventory Management`;
+
+export const PROJECT_DESCRIPTION = `dafdsfafas${"\n"}fda`;
