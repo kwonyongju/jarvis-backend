@@ -1,9 +1,7 @@
 package com.management.inventory.yjinventorymanagement.api;
 
-import com.management.inventory.yjinventorymanagement.domain.Item;
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import com.management.inventory.yjinventorymanagement.domain.Purchase;
-import com.management.inventory.yjinventorymanagement.domain.PurchaseItem;
 import com.management.inventory.yjinventorymanagement.repository.query.PurchaseQueryDto;
 import com.management.inventory.yjinventorymanagement.service.ItemService;
 import com.management.inventory.yjinventorymanagement.service.PersonService;
@@ -16,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,17 +44,12 @@ public class PurchaseApiController {
     public CreatePurchaseResponse createPurchase(@RequestBody @Valid CreatePurchaseRequest request) {
         Person customer = personService.findById(Long.parseLong(request.getPersonId()));
 
-        List<PurchaseItem> purchaseItems = request.getItems()
-                .stream()
-                .map(i -> {
-                    Item item = itemService.createItem(i.getItemName());
+        // can hashmap be passed through json?
+        Map<String, Integer> items = new HashMap<>();
+        for (PurchaseItemRequest pir : request.getItems())
+            items.put(pir.getItemName(), pir.getQuantity());
 
-                    return PurchaseItem.createPurchaseItem(item, i.getQuantity());
-                })
-                .collect(Collectors.toList());
-
-        Long purchaseId = purchaseService.purchase(customer.getId(), purchaseItems);
-
+        Long purchaseId = purchaseService.purchase(customer.getId(), items);
         return new CreatePurchaseResponse(purchaseId);
     }
 
@@ -74,7 +69,7 @@ public class PurchaseApiController {
     }
 
     @Data
-    static class PurchaseItemRequest {
+    static public class PurchaseItemRequest {
         private String itemName;
         private int quantity;
     }

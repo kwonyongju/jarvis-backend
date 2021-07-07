@@ -40,7 +40,6 @@ public enum ItemCatalog {
         return Arrays.asList(ingredients)
                 .stream()
                 .map(i -> i.getClass().getSimpleName())
-                .distinct()
                 .collect(Collectors.toList());
     }
 

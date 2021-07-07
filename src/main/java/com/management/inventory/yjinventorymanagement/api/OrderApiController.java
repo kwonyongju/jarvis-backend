@@ -1,9 +1,6 @@
 package com.management.inventory.yjinventorymanagement.api;
 
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.IngredientFactory;
 import com.management.inventory.yjinventorymanagement.domain.Order;
-import com.management.inventory.yjinventorymanagement.domain.OrderIngredient;
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import com.management.inventory.yjinventorymanagement.repository.IngredientRepository;
 import com.management.inventory.yjinventorymanagement.repository.query.OrderQueryDto;
@@ -17,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,22 +45,11 @@ public class OrderApiController {
     public CreateOrderResponse createOrder(@RequestBody @Valid CreateOrderRequest request) {
         Person person = personService.findById(Long.parseLong(request.getPersonId()));
 
+        Map<String, Integer> ingredients = new HashMap<>();
+        for (IngredientRequest ir : request.getOrderIngredients())
+            ingredients.put(ir.getIngredient(), ir.getQuantity());
 
-        List<OrderIngredient> orderIngredients = request.getOrderIngredients()
-                .stream()
-                .map(oi -> {
-                    // Create ingredient if it is a new ingredient
-                    Ingredient ingredient = ingredientRepository.findByName(oi.getIngredient()) == null
-                            ? IngredientFactory.createIngredient(oi.getIngredient())
-                            : ingredientRepository.findByName(oi.getIngredient());
-
-                    return OrderIngredient.createOrderIngredient
-                            (ingredient, oi.getQuantity());
-                })
-                .collect(Collectors.toList());
-
-        Long orderId = orderService.order(person.getId(), orderIngredients);
-
+        Long orderId = orderService.order(person.getId(), ingredients);
         return new CreateOrderResponse(orderId);
     }
 

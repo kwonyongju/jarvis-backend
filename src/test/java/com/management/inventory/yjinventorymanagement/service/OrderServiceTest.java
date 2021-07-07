@@ -1,15 +1,12 @@
 package com.management.inventory.yjinventorymanagement.service;
 
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Bun;
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Patty;
-import com.management.inventory.yjinventorymanagement.domain.OrderIngredient;
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -45,12 +42,11 @@ class OrderServiceTest {
     @Order(1)
     @DisplayName("Check if ingredients properly get stocked after orders")
     void orderTest() {
-        List<OrderIngredient> orderIngredients = new ArrayList<>();
+        Map<String, Integer> ingredients = new HashMap<>();
+        ingredients.put("Bun", 23);
+        ingredients.put("Patty", 38);
 
-        orderIngredients.add(OrderIngredient.createOrderIngredient(new Bun(29L), 23));
-        orderIngredients.add(OrderIngredient.createOrderIngredient(new Patty(499L), 38));
-
-        orderService.order(customer.getId(), orderIngredients);
+        orderService.order(customer.getId(), ingredients);
 
         assertAll("Assert correct quantity of ingredients are stocked",
                 () -> assertThat(inventoryService.getStockQuantity("Bun")).isSameAs(23),

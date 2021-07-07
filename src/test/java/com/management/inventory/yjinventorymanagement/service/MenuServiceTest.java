@@ -21,7 +21,10 @@ class MenuServiceTest {
     void addMenu() {
         ItemCatalog[] itemCatalogs = ItemCatalog.values();
         for (ItemCatalog ic : itemCatalogs)
-            menuService.add(new Menu(ic.getFormattedName(), ic.getDescription(), ic.getPriceInCent()));
+            menuService
+                    .add(ic.getFormattedName(),
+                            ic.getDescription(),
+                            ic.getIngredientsList(), ic.getPriceInCent());
 
         List<Menu> menu = menuService.getAllMenu();
 

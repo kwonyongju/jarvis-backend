@@ -1,18 +1,18 @@
 package com.management.inventory.yjinventorymanagement.service;
 
-import com.management.inventory.yjinventorymanagement.domain.Item;
 import com.management.inventory.yjinventorymanagement.domain.Person;
-import com.management.inventory.yjinventorymanagement.domain.PurchaseItem;
+import com.management.inventory.yjinventorymanagement.exception.NotEnoughStockException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 @SpringBootTest
@@ -38,7 +38,7 @@ class InventoryServiceTest {
         customer = new Person("Yongju", "Kwon", "yongjuKwon@gmail.com");
         personService.register(customer);
 
-        inventoryService.addStock("Bun", 30);
+        inventoryService.addStock("Bun", 6);
         inventoryService.addStock("Cheese", 50);
         inventoryService.addStock("Tomato", 50);
         inventoryService.addStock("Lettuce", 30);
@@ -68,20 +68,27 @@ class InventoryServiceTest {
     @DisplayName("Check if stocks are properly removed after purchase items")
     @Transactional
     void stockIsRemovedAfterPurchase() {
-        Item bigMac = itemService.createItem("big mac");
+        Map<String, Integer> items = new HashMap<>();
+        items.put("big mac", 2);
 
-        List<PurchaseItem> purchaseItems = new ArrayList<>();
-        PurchaseItem pi = PurchaseItem.createPurchaseItem(bigMac, 2);
-        purchaseItems.add(pi);
-
-        purchaseService.purchase(customer.getId(), purchaseItems);
-        // big mac -> "bun", "lettuce", "cheese", "patty", "bun", "lettuce", "cheese", "patty", "bun"
-
+        purchaseService.purchase(customer.getId(), items);
         assertAll("inventory stock is properly removed after purchase",
-                () -> assertThat(inventoryService.getStockQuantity("Bun")).isSameAs(27),
-                () -> assertThat(inventoryService.getStockQuantity("Lettuce")).isSameAs(28),
-                () -> assertThat(inventoryService.getStockQuantity("Cheese")).isSameAs(48),
-                () -> assertThat(inventoryService.getStockQuantity("Patty")).isSameAs(28)
+                () -> assertThat(inventoryService.getStockQuantity("Bun")).isSameAs(0),
+                () -> assertThat(inventoryService.getStockQuantity("Lettuce")).isSameAs(26),
+                () -> assertThat(inventoryService.getStockQuantity("Cheese")).isSameAs(46),
+                () -> assertThat(inventoryService.getStockQuantity("Patty")).isSameAs(26)
+        );
+    }
+
+    @Test
+    @Order(4)
+    void returnNotEnoughStockExceptionWhenStockIsOut() {
+        for (int i = 0; i < 6; ++i)
+            inventoryService.removeStock("Bun");
+
+        assertThrows(
+                NotEnoughStockException.class,
+                () -> inventoryService.removeStock("Bun")
         );
     }
 }
