@@ -1,5 +1,6 @@
 package com.management.inventory.yjinventorymanagement.domain.Ingredient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.management.inventory.yjinventorymanagement.domain.Item;
 import com.management.inventory.yjinventorymanagement.domain.OrderIngredient;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING,
         name = "Ingredient_Type"
@@ -26,12 +29,13 @@ public abstract class Ingredient {
     private String name;
     private Long priceInCent;
 
+    @JsonIgnore
+    @ManyToOne(fetch = LAZY)
+    private Item item;
+
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ingredient")
     private List<OrderIngredient> orderIngredients = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
-    private Item item;
 
     public Ingredient() {
     }

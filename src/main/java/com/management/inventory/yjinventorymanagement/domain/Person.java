@@ -1,5 +1,6 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -25,13 +26,16 @@ public class Person {
     @NotNull
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "person")
-    private List<Purchase> purchaseHistories = new ArrayList<>();
+    private List<Purchase> purchases = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "person")
     private List<Order> orders = new ArrayList<>();
 
-    public Person() {}
+    public Person() {
+    }
 
     public Person(@NotNull String firstName, @NotNull String lastName, @NotNull String email) {
         this.firstName = firstName;

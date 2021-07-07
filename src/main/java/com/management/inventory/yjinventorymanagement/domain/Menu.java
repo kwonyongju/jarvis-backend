@@ -2,7 +2,9 @@ package com.management.inventory.yjinventorymanagement.domain;
 
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 
 @Entity
 @Getter
@@ -15,6 +17,7 @@ public class Menu {
 
     private String itemName;
     private String itemDescription;
+
     private Long priceInCent;
 
     public Menu(String itemName, String itemDescription, Long priceInCent) {
@@ -23,5 +26,6 @@ public class Menu {
         this.priceInCent = priceInCent;
     }
 
-    protected Menu() {}
+    protected Menu() {
+    }
 }

@@ -1,5 +1,6 @@
 package com.management.inventory.yjinventorymanagement.repository.query;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.management.inventory.yjinventorymanagement.domain.Order;
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(of = "orderId")
 public class OrderQueryDto {
 
+    @JsonIgnore
     private Long orderId;
     private Person person;
     private LocalDateTime orderDate;

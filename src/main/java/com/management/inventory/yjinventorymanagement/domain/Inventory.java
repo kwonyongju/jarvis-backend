@@ -2,7 +2,10 @@ package com.management.inventory.yjinventorymanagement.domain;
 
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -18,7 +21,8 @@ public class Inventory {
     private String ingredientName;
     private int stockQuantity;
 
-    protected Inventory() { }
+    protected Inventory() {
+    }
 
     public Inventory(@NotNull String ingredientName, int stockQuantity) {
         this.ingredientName = ingredientName;

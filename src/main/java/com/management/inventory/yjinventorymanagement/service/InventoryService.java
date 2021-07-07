@@ -16,6 +16,10 @@ public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
 
+    public List<Inventory> findAll() {
+        return inventoryRepository.findAll();
+    }
+
     public void addStock(String ingredientName, int qty) {
         List<Inventory> inventory = inventoryRepository.findAll();
 

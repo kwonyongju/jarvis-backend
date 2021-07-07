@@ -1,7 +1,6 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,7 +26,7 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderIngredient> orderIngredients = new ArrayList<>();
 
-    @Setter
+    private Long totalPriceInCent;
     private LocalDateTime orderDate;
 
     protected Order() {
@@ -37,13 +36,18 @@ public class Order {
         this.person = person;
         this.orderDate = LocalDateTime.now();
 
-        for (OrderIngredient oi : orderIngredients)
+        Long totalPrice = 0L;
+
+        for (OrderIngredient oi : orderIngredients) {
             addOrderIngredient(oi);
+            totalPrice += oi.getTotalPriceInCent();
+        }
+
+        this.totalPriceInCent = totalPrice;
     }
 
     public static Order createOrder(Person person, List<OrderIngredient> orderIngredients) {
         Order order = new Order(person, orderIngredients);
-        order.orderDate = LocalDateTime.now();
 
         return order;
     }

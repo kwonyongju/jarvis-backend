@@ -1,6 +1,7 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Slf4j
 public class Purchase {
 
     @Id
@@ -23,7 +25,7 @@ public class Purchase {
     private Person person;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "purchase")
-    private List<Item> items = new ArrayList<>();
+    private List<PurchaseItem> purchaseItems = new ArrayList<>();
 
     private Long totalPriceInCent;
     private LocalDateTime purchaseDate;
@@ -31,26 +33,27 @@ public class Purchase {
     protected Purchase() {
     }
 
-    public Purchase(Person person, List<Item> items) {
+    public Purchase(Person person, List<PurchaseItem> purchaseItems) {
         this.person = person;
-        this.items = items;
+        this.purchaseDate = LocalDateTime.now();
+        Long totalPrice = 0L;
+
+        for (PurchaseItem pi : purchaseItems) {
+            addPurchaseItem(pi);
+            totalPrice += pi.getTotalPriceInCent();
+        }
+
+        this.totalPriceInCent = totalPrice;
     }
 
-    public static Purchase orderItems(Person person, List<Item> items) {
-        Purchase purchase = new Purchase(person, items);
-
-        Long totalPrice = items.stream().map(Item::getPriceInCent).reduce(0L, Long::sum);
-        purchase.setTotalPriceInCent(totalPrice);
-        purchase.setPurchaseDate(LocalDateTime.now());
+    public static Purchase purchase(Person person, List<PurchaseItem> purchaseItems) {
+        Purchase purchase = new Purchase(person, purchaseItems);
 
         return purchase;
     }
 
-    private void setTotalPriceInCent(Long totalPriceInCent) {
-        this.totalPriceInCent = totalPriceInCent;
-    }
-
-    private void setPurchaseDate(LocalDateTime purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    private void addPurchaseItem(PurchaseItem purchaseItem) {
+        this.purchaseItems.add(purchaseItem);
+        purchaseItem.setPurchase(this);
     }
 }

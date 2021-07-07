@@ -1,19 +1,19 @@
 spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/yj-inventory-management
-#    url: jdbc:mysql://localhost/inventory_management
+    #    url: jdbc:mysql://localhost/inventory_management
     username: sa
-#    username: root
+    #    username: root
     password:
     driver-class-name: org.h2.Driver
-#    driver-class-name: com.mysql.jdbc.Driver
+  #    driver-class-name: com.mysql.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
-      #        show_sql: true
+        #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
 #    open-in-view: false

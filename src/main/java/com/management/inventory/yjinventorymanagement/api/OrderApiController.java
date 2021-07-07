@@ -7,7 +7,6 @@ import com.management.inventory.yjinventorymanagement.domain.OrderIngredient;
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import com.management.inventory.yjinventorymanagement.repository.IngredientRepository;
 import com.management.inventory.yjinventorymanagement.repository.query.OrderQueryDto;
-import com.management.inventory.yjinventorymanagement.repository.query.OrderQueryRepository;
 import com.management.inventory.yjinventorymanagement.service.OrderService;
 import com.management.inventory.yjinventorymanagement.service.PersonService;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderApiController {
 
-    private final OrderQueryRepository orderQueryRepository;
     private final IngredientRepository ingredientRepository;
     private final PersonService personService;
     private final OrderService orderService;
@@ -34,7 +32,7 @@ public class OrderApiController {
 
     @GetMapping("/api/v1/orders")
     public GetResponse getOrders(@RequestParam Long id) {
-        List<Order> orders = orderQueryRepository.findAllByPersonId(id);
+        List<Order> orders = orderService.findAllByPersonId(id);
 
         List<OrderQueryDto> result = orders.stream()
                 .map(OrderQueryDto::new).distinct().collect(Collectors.toList());

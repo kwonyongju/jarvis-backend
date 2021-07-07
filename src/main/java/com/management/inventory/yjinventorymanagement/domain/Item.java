@@ -1,6 +1,6 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
-import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -12,6 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Table(name = "item")
 public class Item {
 
     @Id
@@ -21,29 +22,22 @@ public class Item {
 
     @NotNull
     private String name;
-    private String description;
 
-    @OneToMany(mappedBy = "item")
-    private List<Ingredient> ingredients = new ArrayList<>(); // need to change string -> ingredient
-
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "purchase_id")
-    private Purchase purchase;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+    private List<PurchaseItem> purchaseItems = new ArrayList<>();
 
     private Long priceInCent;
-
-    public Item(@NotNull String name, Long priceInCent, List<Ingredient> ingredients) {
-        this.name = name;
-        this.ingredients = ingredients;
-        this.priceInCent = priceInCent;
-    }
 
     protected Item() {
     }
 
-
+    public Item(@NotNull String name, Long priceInCent) {
+        this.name = name;
+        this.priceInCent = priceInCent;
+    }
 }

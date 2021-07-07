@@ -1,5 +1,6 @@
 package com.management.inventory.yjinventorymanagement.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.management.inventory.yjinventorymanagement.domain.Ingredient.Ingredient;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,13 +19,14 @@ public class OrderIngredient {
     @Column(name = "order_ingredient_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
+    @JsonIgnore
     @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
     @Setter
     private Order order;
 
-    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ingredient_id")
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.PERSIST)
     private Ingredient ingredient;
 
     @Setter
