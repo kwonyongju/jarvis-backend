@@ -3,7 +3,7 @@ export const NAV_ITEMS = [
     name: "Customer",
     subItems: [
       { name: "Menu", label: "menu" },
-      { name: "Purhcase History", label: "purhcaseHistory" },
+      { name: "Purchase History", label: "purchases" },
     ],
     label: "customer",
   },
@@ -12,8 +12,8 @@ export const NAV_ITEMS = [
     subItems: [
       { name: "Sales", label: "sales" },
       { name: "Inventory", label: "inventory" },
-      { name: "Ingredients List", label: "ingredientsList" },
-      { name: "Order History", label: "orderHistory" },
+      { name: "Ingredients List", label: "ingredients" },
+      { name: "Order History", label: "orders" },
     ],
     label: "manager",
   },

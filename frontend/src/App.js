@@ -9,6 +9,12 @@ import Main from "./pages/Main";
 import Customer from "./pages/Customer";
 import Manager from "./pages/Manager";
 import { NAV_ITEMS } from "./constants/navItems";
+import Menu from "./pages/customer/Menu";
+import PurchaseHistory from "./pages/customer/Purchases";
+import Sales from "./pages/manager/Sales";
+import Inventory from "./pages/manager/Inventory";
+import OrderHistory from "./pages/manager/Orders";
+import IngredientsList from "./pages/manager/Ingredients";
 
 const App = () => {
   return (
@@ -26,8 +32,26 @@ const App = () => {
             <Route path="/customer">
               <Customer />
             </Route>
+            <Route path="/menu">
+              <Menu />
+            </Route>
+            <Route path="/purchases">
+              <PurchaseHistory />
+            </Route>
             <Route path="/manager">
               <Manager />
+            </Route>
+            <Route path="/sales">
+              <Sales />
+            </Route>
+            <Route path="/inventory">
+              <Inventory />
+            </Route>
+            <Route path="/ingredients">
+              <IngredientsList />
+            </Route>
+            <Route path="/orders">
+              <OrderHistory />
             </Route>
           </Switch>
         </Content>
