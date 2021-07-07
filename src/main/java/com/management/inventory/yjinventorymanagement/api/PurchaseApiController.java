@@ -11,6 +11,7 @@ import com.management.inventory.yjinventorymanagement.service.PurchaseService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,23 +21,20 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class PurchaseApiController {
 
     private final ItemService itemService;
     private final PurchaseService purchaseService;
     private final PersonService personService;
 
-    @GetMapping("/api/v1/purchase")
-    public GetResponse getPurchases() {
-        List<Purchase> purchases = purchaseService.findAll();
-        List<PurchaseQueryDto> result = convertPurchaseToDto(purchases);
+    @GetMapping({"/api/v1/purchase", "/api/v1/purchase/{id}"})
+    public GetResponse getPurchases(@PathVariable(required = false) Long id) {
+        List<Purchase> purchases =
+                id == null
+                        ? purchaseService.findAll()
+                        : purchaseService.findAllByPersonId(id);
 
-        return new GetResponse(result.size(), result);
-    }
-
-    @GetMapping("/api/v1/purchase/{id}")
-    public GetResponse getPurchases(@PathVariable("id") Long id) {
-        List<Purchase> purchases = purchaseService.findAllByPersonId(id);
         List<PurchaseQueryDto> result = convertPurchaseToDto(purchases);
 
         return new GetResponse(result.size(), result);

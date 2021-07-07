@@ -29,10 +29,12 @@ public class OrderApiController {
     private final PersonService personService;
     private final OrderService orderService;
 
-
-    @GetMapping("/api/v1/orders")
-    public GetResponse getOrders(@RequestParam Long id) {
-        List<Order> orders = orderService.findAllByPersonId(id);
+    @GetMapping({"/api/v1/orders", "/api/v1/orders/{id}"})
+    public GetResponse getOrders(@PathVariable(required = false) Long id) {
+        List<Order> orders =
+                id == null
+                        ? orderService.findAll()
+                        : orderService.findAllByPersonId(id);
 
         List<OrderQueryDto> result = orders.stream()
                 .map(OrderQueryDto::new).distinct().collect(Collectors.toList());

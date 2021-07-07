@@ -24,7 +24,7 @@ public class OrderQueryRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<Order> findAllOrderQueryDto() {
+    public List<Order> findAll() {
         return queryFactory
                 .selectFrom(order)
                 .join(order.person, person).fetchJoin()

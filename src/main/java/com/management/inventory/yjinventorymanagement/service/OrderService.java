@@ -35,6 +35,10 @@ public class OrderService {
         return order.getId();
     }
 
+    public List<Order> findAll() {
+        return orderQueryRepository.findAll();
+    }
+
     public List<Order> findAllByPersonId(Long id) {
         return orderQueryRepository.findAllByPersonId(id);
     }
