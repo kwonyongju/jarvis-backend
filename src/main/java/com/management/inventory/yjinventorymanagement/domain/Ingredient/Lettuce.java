@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("Lettuce")
 public class Lettuce extends Ingredient {
-    public Lettuce(String name, Long priceInCent) {
-        super(name, priceInCent);
+    public Lettuce(Long priceInCent) {
+        super(priceInCent);
     }
 
     public Lettuce() {

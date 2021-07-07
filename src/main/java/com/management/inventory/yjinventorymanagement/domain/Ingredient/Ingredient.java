@@ -40,8 +40,8 @@ public abstract class Ingredient {
     public Ingredient() {
     }
 
-    public Ingredient(String name, Long priceInCent) {
-        this.name = name;
+    public Ingredient(Long priceInCent) {
+        this.name = this.getClass().getSimpleName();
         this.priceInCent = priceInCent;
     }
 
