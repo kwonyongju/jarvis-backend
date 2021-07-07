@@ -23,16 +23,19 @@ const SpinWrapper = styled.div`
   margin: 0 auto;
 `;
 
-const OrderButton = styled.button``;
-
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [inputMatrix, setInputMatrix] = useState({
     personId: 1,
     items: [],
   });
-
-  const menuTableHeaders = ["name", "description", "ingredients", "price"];
+  const menuTableHeaders = [
+    "Name",
+    "Description",
+    "Ingredients",
+    "Price (CAD)",
+  ];
+  const labels = ["name", "description", "ingredients", "price"];
 
   useEffect(() => {
     axios.get(`${API_URL}/menu`).then((response) => {
@@ -49,16 +52,34 @@ const Menu = () => {
     });
   }, []);
 
+  const handleOnOrder = ({ itemIndex }) => {
+    setInputMatrix({
+      ...inputMatrix,
+      items: [...inputMatrix.items, menu[itemIndex]],
+    });
+  };
+
+  const handleInputChange = ({ name, value }) => {
+    setInputMatrix({
+      ...inputMatrix,
+      [name]: value,
+    });
+  };
+
   return menu.length > 0 ? (
     <Root>
       <Title>Menu</Title>
       <Table
-        headers={menuTableHeaders}
+        buttonLabel="Order"
         data={menu}
-        button={<OrderButton>Order</OrderButton>}
+        headers={menuTableHeaders}
+        inputMatrix={inputMatrix}
+        labels={labels}
+        onChange={handleInputChange}
+        onOrder={handleOnOrder.bind(this)}
       />
       <hr />
-      <Cart />
+      <Cart inputMatrix={inputMatrix} />
     </Root>
   ) : (
     <SpinWrapper>
