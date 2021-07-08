@@ -2,8 +2,8 @@ export const NAV_ITEMS = [
   {
     name: "Customer",
     subItems: [
-      { name: "Menu", label: "menu" },
-      { name: "Purchase History", label: "purchases" },
+      { name: "Menu/Order", label: "menu" },
+      { name: "Order History", label: "purchases" },
     ],
     label: "customer",
   },

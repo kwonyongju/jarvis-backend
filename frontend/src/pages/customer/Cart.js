@@ -6,6 +6,11 @@ import { Modal } from "antd";
 
 import Table from "../../components/elements/Table/Table";
 import { c_brown, c_light_red } from "../../utils/colors";
+import {
+  ADD_TO_CART_MSG,
+  COMPLETE_PURCHASE_MSG,
+  OUT_OF_STOCK_MSG,
+} from "../../constants/modalMessages";
 
 const API_URL = process.env.REACT_APP_API_PURCHASE_URL;
 
@@ -34,6 +39,8 @@ const OrderButton = styled.button`
 const Cart = ({ inputMatrix, onChange }) => {
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+
   const cartTableHeaders = [
     "",
     "Item",
@@ -41,6 +48,7 @@ const Cart = ({ inputMatrix, onChange }) => {
     "Price",
     "Tax (5%)",
     "TotalPrice",
+    "",
   ];
   const labels = ["index", "name", "quantity", "price", "tax", "totalPrice"];
 
@@ -48,23 +56,27 @@ const Cart = ({ inputMatrix, onChange }) => {
     if (inputMatrix.items) formatTableData(inputMatrix.items);
   }, [inputMatrix]);
 
-  const toggleModal = () => {
+  const toggleModal = (msg) => {
+    setModalContent(msg);
     setModalVisible(!modalVisible);
   };
 
   const handleOnOrder = () => {
-    const body = JSON.parse(constructRequestBody());
-    axios.post(API_URL, body).then((response) => {
-      console.log(response);
-      if (response.status === 200 && response.data.id > 0) {
-        setData([]);
-        onChange({ name: "items", value: [] });
-      }
+    if (data.length > 1) {
+      const body = JSON.parse(constructRequestBody());
+      axios.post(API_URL, body).then((response) => {
+        console.log(response);
+        if (response.status === 200 && response.data.id > 0) {
+          toggleModal(COMPLETE_PURCHASE_MSG);
+          setData([]);
+          onChange({ name: "items", value: [] });
+        }
 
-      if (response.data.id === -1) {
-        toggleModal();
-      }
-    });
+        if (response.data.id === -1) {
+          toggleModal(OUT_OF_STOCK_MSG);
+        }
+      });
+    } else toggleModal(ADD_TO_CART_MSG);
   };
 
   const constructRequestBody = () => {
@@ -112,7 +124,7 @@ const Cart = ({ inputMatrix, onChange }) => {
     });
 
     temp.push({
-      totalPrice: `$ ${totalPrice.toFixed(2)}`,
+      totalPrice: `$${totalPrice.toFixed(2)}`,
     });
 
     setData(temp);
@@ -131,8 +143,6 @@ const Cart = ({ inputMatrix, onChange }) => {
     });
   };
 
-  console.log(inputMatrix.items);
-  console.log(data);
   return (
     <Root>
       <Title>Cart</Title>
@@ -150,22 +160,12 @@ const Cart = ({ inputMatrix, onChange }) => {
         <OrderButton onClick={() => handleOnOrder()}>Place Order</OrderButton>
       </ButtonWrapper>
       <Modal
-        title="Some ingredients are out of stock"
         centered
         visible={modalVisible}
         onOk={() => toggleModal()}
         onCancel={() => toggleModal()}
       >
-        <p>
-          We are very sorry, we just had a mukbang show with a Youtuber. He has
-          eaten all of our burgers..
-          <br />
-          <br />
-          Please come back next time..
-          <br />
-          <br />* If you ask our manager to stock those, it will be delivered
-          right away!
-        </p>
+        {modalContent}
       </Modal>
     </Root>
   );

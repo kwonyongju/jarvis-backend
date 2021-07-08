@@ -35,6 +35,7 @@ const Menu = () => {
     "Description",
     "Ingredients",
     "Price (CAD)",
+    "",
   ];
   const labels = ["name", "description", "ingredients", "price"];
 
@@ -80,7 +81,6 @@ const Menu = () => {
         onChange={handleInputChange}
         onClick={handleOnOrder.bind(this)}
       />
-      <hr />
       <Cart inputMatrix={inputMatrix} onChange={handleInputChange} />
     </Root>
   ) : (

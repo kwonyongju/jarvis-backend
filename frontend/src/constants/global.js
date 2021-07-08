@@ -23,4 +23,10 @@ export const GlobalStyle = createGlobalStyle`
   li {
     list-style-type: none;
   }
+
+  .ant-modal-body {
+    padding: 50px 0;
+    text-align: center;
+    white-space: break-spaces;
+  }
 `;
