@@ -1,5 +1,6 @@
 package com.management.inventory.yjinventorymanagement.domain.Ingredient;
 
+import com.management.inventory.yjinventorymanagement.constant.IngredientCatalog;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,22 +10,22 @@ public class IngredientFactory {
         Ingredient ingredient;
         switch (ingredientName) {
             case "Bacon":
-                ingredient = new Bacon(39L);
+                ingredient = new Bacon(IngredientCatalog.BACON.getPriceInCent());
                 break;
             case "Bun":
-                ingredient = new Bun(29L);
+                ingredient = new Bun(IngredientCatalog.BUN.getPriceInCent());
                 break;
             case "Cheese":
-                ingredient = new Cheese(89L);
+                ingredient = new Cheese(IngredientCatalog.CHEESE.getPriceInCent());
                 break;
             case "Lettuce":
-                ingredient = new Lettuce(10L);
+                ingredient = new Lettuce(IngredientCatalog.LETTUCE.getPriceInCent());
                 break;
             case "Patty":
-                ingredient = new Patty(599L);
+                ingredient = new Patty(IngredientCatalog.PATTY.getPriceInCent());
                 break;
             case "Tomato":
-                ingredient = new Tomato(35L);
+                ingredient = new Tomato(IngredientCatalog.TOMATO.getPriceInCent());
                 break;
             default:
                 throw new IllegalArgumentException("No such ingredient");

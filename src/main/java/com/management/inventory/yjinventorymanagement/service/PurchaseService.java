@@ -4,6 +4,7 @@ import com.management.inventory.yjinventorymanagement.domain.Item;
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import com.management.inventory.yjinventorymanagement.domain.Purchase;
 import com.management.inventory.yjinventorymanagement.domain.PurchaseItem;
+import com.management.inventory.yjinventorymanagement.exception.NotEnoughStockException;
 import com.management.inventory.yjinventorymanagement.repository.PersonRepository;
 import com.management.inventory.yjinventorymanagement.repository.PurchaseRepository;
 import com.management.inventory.yjinventorymanagement.repository.query.PurchaseQueryRepository;
@@ -28,16 +29,20 @@ public class PurchaseService {
         Optional<Person> customer = personRepository.findById(customerId);
         if (customer.isEmpty())
             throw new IllegalArgumentException("No such customer!");
+        List<PurchaseItem> purchaseItems;
+        try {
+            purchaseItems = items.keySet()
+                    .stream()
+                    .map(itemName -> {
+                        int quantity = items.get(itemName);
+                        Item item = itemService.createItem(itemName, quantity);
 
-        List<PurchaseItem> purchaseItems = items.keySet()
-                .stream()
-                .map(itemName -> {
-                    int quantity = items.get(itemName);
-                    Item item = itemService.createItem(itemName, quantity);
-
-                    return PurchaseItem.createPurchaseItem(item, quantity);
-                })
-                .collect(Collectors.toList());
+                        return PurchaseItem.createPurchaseItem(item, quantity);
+                    })
+                    .collect(Collectors.toList());
+        } catch (NotEnoughStockException e) {
+            throw e;
+        }
 
         Purchase purchase = Purchase.purchase(customer.get(), purchaseItems);
         purchaseRepository.save(purchase);
