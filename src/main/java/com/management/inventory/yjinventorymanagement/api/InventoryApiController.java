@@ -1,5 +1,7 @@
 package com.management.inventory.yjinventorymanagement.api;
 
+import com.management.inventory.yjinventorymanagement.constant.IngredientCatalog;
+import com.management.inventory.yjinventorymanagement.constant.ItemCatalog;
 import com.management.inventory.yjinventorymanagement.service.InventoryService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +22,12 @@ public class InventoryApiController {
     public GetResponse getInventory() {
         List<InventoryDto> inventoryList = inventoryService.findAll()
                 .stream()
-                .map(i -> new InventoryDto(i.getIngredientName(), i.getStockQuantity()))
+                .map(i -> {
+                    Long priceInCent = IngredientCatalog
+                            .valueOf(ItemCatalog.convertToEnumCase(i.getIngredientName()))
+                            .getPriceInCent();
+                    return new InventoryDto(i.getIngredientName(), i.getStockQuantity(), priceInCent);
+                })
                 .collect(Collectors.toList());
 
         return new GetResponse(inventoryList.size(), inventoryList);
@@ -31,5 +38,6 @@ public class InventoryApiController {
     static class InventoryDto {
         private String ingredientName;
         private int stockQuantity;
+        private Long priceInCent;
     }
 }

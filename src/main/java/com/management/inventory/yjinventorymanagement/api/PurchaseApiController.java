@@ -2,6 +2,7 @@ package com.management.inventory.yjinventorymanagement.api;
 
 import com.management.inventory.yjinventorymanagement.domain.Person;
 import com.management.inventory.yjinventorymanagement.domain.Purchase;
+import com.management.inventory.yjinventorymanagement.exception.NotEnoughStockException;
 import com.management.inventory.yjinventorymanagement.repository.query.PurchaseQueryDto;
 import com.management.inventory.yjinventorymanagement.service.ItemService;
 import com.management.inventory.yjinventorymanagement.service.PersonService;
@@ -49,7 +50,13 @@ public class PurchaseApiController {
         for (PurchaseItemRequest pir : request.getItems())
             items.put(pir.getItemName(), pir.getQuantity());
 
-        Long purchaseId = purchaseService.purchase(customer.getId(), items);
+        Long purchaseId;
+        try {
+            purchaseId = purchaseService.purchase(customer.getId(), items);
+        } catch (NotEnoughStockException e) {
+            return new CreatePurchaseResponse(-1L);
+        }
+
         return new CreatePurchaseResponse(purchaseId);
     }
 
