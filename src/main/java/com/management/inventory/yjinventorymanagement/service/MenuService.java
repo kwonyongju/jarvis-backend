@@ -23,4 +23,8 @@ public class MenuService {
     public List<Menu> getAllMenu() {
         return menuRepository.findAll();
     }
+
+    public Menu getMenuByItemName(String itemName) {
+        return menuRepository.findByItemName(itemName);
+    }
 }
