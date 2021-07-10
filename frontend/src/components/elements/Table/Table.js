@@ -49,6 +49,7 @@ const Table = ({
   inputMatrix,
   labels,
   onBlur,
+  onClick,
   subLabelHeader,
   subLabels,
   tdHeight,
@@ -65,6 +66,7 @@ const Table = ({
     const input = form[0];
     const { max, min, name, value } = input;
 
+    /* TODO: warning message instead of doing nothing */
     if (max && parseFloat(value) > parseFloat(max)) {
       return;
     }
@@ -207,9 +209,13 @@ const Table = ({
                     <TableButton
                       key={`button-${item.name}-${itemIndex}`}
                       type="button"
-                      form={`form-${item.name}`}
+                      form={inputField ? `form-${item.name}` : null}
                       {...buttonStyleProps}
-                      onClick={handleOnClick}
+                      onClick={
+                        buttonLabel !== "Remove" && onBlur
+                          ? (e) => handleOnClick(e)
+                          : () => onClick({ itemIndex })
+                      }
                     >
                       {buttonLabel}
                     </TableButton>

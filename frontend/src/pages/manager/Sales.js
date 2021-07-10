@@ -23,7 +23,6 @@ const Sales = () => {
     axios.get(API_URL).then((response) => {
       const salesData = response.data.data.map((sale) => {
         let sum = 0;
-        console.log(sale);
         return {
           date: `${sale.purchaseDate.slice(0, 3).join("-")} ${sale.purchaseDate
             .slice(3, 6)
@@ -40,7 +39,6 @@ const Sales = () => {
           totalPrice: `$${((sum / 100) * 1.05).toFixed(2)}`,
         };
       });
-      console.log(salesData);
       setSales(salesData);
     });
   }, []);

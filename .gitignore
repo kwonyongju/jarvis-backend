@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### DB initialization
+../src/main/java/com/management/inventory/yjinventorymanagement/DBInitialization.java

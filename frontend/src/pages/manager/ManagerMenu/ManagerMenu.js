@@ -6,9 +6,7 @@ import styled from "styled-components";
 import { MENU_HEADERS, MENU_LABELS } from "../../../constants/list";
 import AddModalContent from "./utils/AddModalContent";
 import { c_brown, c_dark_yellow } from "../../../utils/colors";
-import { formatTableData } from "../../customer/Menu/utils/MenuUtils";
 import { Modal } from "antd";
-import Cart from "../../../components/Cart/Cart";
 import LoadingSpin from "../../../components/elements/LoadingSpin/LoadingSpin";
 import Row from "../../../components/layout/Row";
 import Table from "../../../components/elements/Table/Table";
@@ -60,7 +58,6 @@ const Menu = () => {
   }, [modalVisible]);
 
   useEffect(() => {
-    console.log(selectedOptions.length);
     if (!selectedOptions.length) setFormData(null);
   }, [selectedOptions]);
 

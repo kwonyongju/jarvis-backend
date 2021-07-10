@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+
+import {
+  ADD_TO_CART_MSG,
+  COMPLETE_ORDER_MSG,
+} from "../../constants/modalMessages";
+import { c_dark_yellow } from "../../utils/colors";
+import { formatDataToCart } from "../../utils/format";
+import Cart from "../../components/Cart/Cart";
 import Table from "../../components/elements/Table/Table";
 import Title from "../../components/elements/Title/Title";
-// import Cart from "../customer/Cart";
-
-import { c_dark_yellow } from "../../utils/colors";
 import LoadingSpin from "../../components/elements/LoadingSpin/LoadingSpin";
 
 const API_URL = process.env.REACT_APP_API_INVENTORY_URL;
@@ -14,7 +19,6 @@ const Root = styled.div``;
 
 const Inventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
-  const [counts, setCounts] = useState([]);
   const [inputMatrix, setInputMatrix] = useState({
     personId: 2,
     orderIngredients: [],
@@ -47,6 +51,10 @@ const Inventory = () => {
   ];
 
   useEffect(() => {
+    getInventory();
+  }, []);
+
+  const getInventory = () => {
     axios.get(API_URL).then((response) => {
       if (response.status === 200) {
         const temp = response.data.data.map((ingredient) => {
@@ -60,20 +68,7 @@ const Inventory = () => {
         setInventoryData(temp);
       }
     });
-  }, []);
-
-  useEffect(() => {
-    if (inventoryData.length) {
-      setCounts(
-        inventoryData.map((inventory) => {
-          return {
-            name: inventory.name,
-            count: null,
-          };
-        })
-      );
-    }
-  }, [inventoryData]);
+  };
 
   const handleOnAddToCart = (e) => {
     if (e.name) {
@@ -82,7 +77,9 @@ const Inventory = () => {
       const exist = inputMatrix.orderIngredients.find(
         (oi) => oi.ingredient === name
       );
+      // if input value is valid
       if (parseInt(value)) {
+        // if it is already in cart
         if (exist) {
           const updated = inputMatrix.orderIngredients.map((oi) =>
             oi === exist ? { ...oi, quantity: value } : oi
@@ -93,12 +90,14 @@ const Inventory = () => {
             orderIngredients: updated,
           });
         } else {
+          // if it is not in cart
           setInputMatrix({
             ...inputMatrix,
             orderIngredients: [
               ...inputMatrix.orderIngredients,
               {
                 ingredient: name,
+                price: inventoryData.find((i) => i.name === name).price,
                 quantity: value,
               },
             ],
@@ -108,13 +107,7 @@ const Inventory = () => {
     }
   };
 
-  console.log(inventoryData);
-  console.log(inputMatrix);
-
   const handleInputChange = ({ name, value }) => {
-    console.log("name: " + name);
-    console.log("value: " + value);
-
     setInputMatrix({
       ...inputMatrix,
       [name]: value,
@@ -135,16 +128,20 @@ const Inventory = () => {
         onBlur={handleOnAddToCart}
         onClick={handleOnAddToCart.bind(this)}
       />
-      {/* <Cart
-        errorMessage={ADD_TO_CART_MSG}
+      <Cart
+        apiUrl={process.env.REACT_APP_API_ORDER_URL}
+        cartNameLabel={"ingredient"}
         headers={cartHeaders}
         inputMatrix={inputMatrix}
         labels={cartLabels}
         onChange={handleInputChange}
-        onFormatTableData={formatTableData}
+        formatData={formatDataToCart}
         orderLabel={"orderIngredients"}
         orderProductLabel={"ingredient"}
-      /> */}
+        refresh={getInventory}
+        successMessage={COMPLETE_ORDER_MSG}
+        warningMessage={ADD_TO_CART_MSG}
+      />
     </Root>
   ) : (
     <LoadingSpin />

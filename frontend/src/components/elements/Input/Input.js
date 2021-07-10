@@ -14,7 +14,7 @@ const Root = styled.input`
   }
 `;
 
-const Input = ({ min, max, name, onBlur, placeholder, step, type }) => {
+const Input = ({ min, max, name, placeholder, step, type }) => {
   const [orderIngredients, setOrderIngredients] = useState({
     [name]: "",
   });

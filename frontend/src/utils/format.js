@@ -11,14 +11,17 @@ const formatDataToCart = ({ items, nameLabel }) => {
 
   let index = 0;
   let totalPrice = 0;
+
   map.forEach((value, key) => {
     const item = items.find((i) => i[nameLabel] === key);
-    const price = (item.price * value).toFixed(2);
+    const price = item.quantity
+      ? (item.price * item.quantity).toFixed(2)
+      : (item.price * value).toFixed(2);
 
     temp.push({
       index: ++index,
       name: item[nameLabel],
-      quantity: value,
+      quantity: item.quantity || value,
       price: price,
       tax: (price * 0.05).toFixed(2),
     });

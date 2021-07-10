@@ -15,7 +15,7 @@ import {
   MENU_LABELS,
 } from "../../../constants/list";
 import { c_dark_yellow } from "../../../utils/colors";
-import { formatTableData } from "./utils/MenuUtils";
+import { formatDataToCart } from "../../../utils/format";
 import Cart from "../../../components/Cart/Cart";
 import LoadingSpin from "../../../components/elements/LoadingSpin/LoadingSpin";
 import Table from "../../../components/elements/Table/Table";
@@ -78,12 +78,14 @@ const Menu = () => {
         onClick={handleOnAddToCart.bind(this)}
       />
       <Cart
+        apiUrl={process.env.REACT_APP_API_PURCHASE_URL}
         errorMessage={OUT_OF_STOCK_MSG}
         headers={CART_HEADERS}
         inputMatrix={inputMatrix}
         labels={CART_LABELS}
         onChange={handleInputChange}
-        onFormatTableData={formatTableData}
+        formatData={formatDataToCart}
+        cartNameLabel={"name"}
         orderLabel={"items"}
         orderProductLabel={"itemName"}
         successMessage={COMPLETE_PURCHASE_MSG}

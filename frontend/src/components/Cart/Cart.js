@@ -4,11 +4,8 @@ import axios from "axios";
 import styled from "styled-components";
 import { Modal } from "antd";
 
-import LoadingSpin from "../elements/LoadingSpin/LoadingSpin";
 import Table from "../elements/Table/Table";
 import { c_brown, c_light_red } from "../../utils/colors";
-
-const API_URL = process.env.REACT_APP_API_PURCHASE_URL;
 
 const Root = styled.div`
   margin-top: 2vh;
@@ -33,14 +30,17 @@ const OrderButton = styled.button`
 `;
 
 const Cart = ({
+  apiUrl,
+  cartNameLabel,
   errorMessage,
+  formatData,
   headers,
   inputMatrix,
   labels,
   onChange,
-  onFormatTableData,
   orderLabel,
   orderProductLabel,
+  refresh,
   successMessage,
   warningMessage,
 }) => {
@@ -50,7 +50,12 @@ const Cart = ({
 
   useEffect(() => {
     if (inputMatrix[orderLabel])
-      setData(onFormatTableData(inputMatrix[orderLabel]));
+      setData(
+        formatData({
+          items: inputMatrix[orderLabel],
+          nameLabel: cartNameLabel,
+        })
+      );
   }, [inputMatrix]);
 
   const toggleModal = (message) => {
@@ -61,10 +66,11 @@ const Cart = ({
   const handleOnOrder = () => {
     if (data.length > 1) {
       const body = JSON.parse(constructRequestBody());
-      axios.post(API_URL, body).then((response) => {
-        console.log(response);
+
+      axios.post(apiUrl, body).then((response) => {
         if (response.status === 200 && response.data.id > 0) {
           toggleModal(successMessage);
+          refresh ? refresh() : null;
           setData([]);
           onChange({ name: orderLabel, value: [] });
         }
@@ -96,18 +102,16 @@ const Cart = ({
 
   const handleOnRemove = ({ itemIndex }) => {
     const remove = inputMatrix[orderLabel].find(
-      (item) => item.name === data[itemIndex].name
+      (item) => item[cartNameLabel] === data[itemIndex].name
     );
-    const index = inputMatrix[orderLabel].indexOf(remove);
-    inputMatrix[orderLabel].splice(index, 1);
 
     onChange({
       name: orderLabel,
-      value: inputMatrix.items,
+      value: inputMatrix[orderLabel].filter((i) => i != remove),
     });
   };
 
-  return data && data.length ? (
+  return (
     <Root>
       <Title>Cart</Title>
       <Table
@@ -132,8 +136,6 @@ const Cart = ({
         {modalContent}
       </Modal>
     </Root>
-  ) : (
-    <LoadingSpin />
   );
 };
 

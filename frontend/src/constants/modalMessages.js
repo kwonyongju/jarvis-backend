@@ -13,3 +13,10 @@ export const COMPLETE_PURCHASE_MSG = `
 🎉🎉🎉
 The order has been made, you can check it in your order history
 `;
+
+export const COMPLETE_ORDER_MSG = `
+🎉🎉🎉
+The order has been made. 
+It will be delivered in a second w/ rocket delivery🚀
+(which means you will see the updated stock quantity right away!)
+`;
