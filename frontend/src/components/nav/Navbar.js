@@ -16,6 +16,7 @@ const Root = styled.div`
 
 const NavLeft = styled.div`
   padding-left: 20px;
+  font-size: 1.2rem;
 
   a:hover {
     color: ${c_dim_gray};

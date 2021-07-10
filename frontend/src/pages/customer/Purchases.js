@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import Table from "../../components/elements/Table/Table";
+import LoadingSpin from "../../components/elements/LoadingSpin/LoadingSpin";
 
 const API_URL = process.env.REACT_APP_API_PURCHASE_URL;
 
@@ -37,23 +38,24 @@ const PurchaseHistory = () => {
           totalPrice: `$${((sum / 100) * 1.05).toFixed(2)}`,
         };
       });
-
       setPurchases(purchaseData);
     });
   }, []);
 
-  return (
+  return purchases && purchases.length ? (
     <Root>
       <Title>Order History</Title>
 
       <Table
-        data={purchases.reverse()}
+        data={purchases}
         headers={purchaseTableHeaders}
         labels={labels}
         subLabelHeader="Items"
         subLabels={subLabels}
       />
     </Root>
+  ) : (
+    <LoadingSpin />
   );
 };
 

@@ -17,12 +17,14 @@ const Row = ({
   marginBottom,
   marginBottomDouble,
   marginTopDouble,
+  spaceBetween,
 }) => {
   const styleProps = {
     justifyCenter: justifyCenter,
     marginBottom: marginBottom,
     marginBottomDouble: marginBottomDouble,
     marginTopDouble: marginTopDouble,
+    spaceBetween: spaceBetween,
   };
 
   return <Root {...styleProps}>{children}</Root>;

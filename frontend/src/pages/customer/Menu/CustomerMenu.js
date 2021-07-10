@@ -3,25 +3,29 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-
-import { c_dark_yellow } from "../../utils/colors";
-import Table from "../../components/elements/Table/Table";
-import Cart from "./Cart";
+import {
+  ADD_TO_CART_MSG,
+  COMPLETE_PURCHASE_MSG,
+  OUT_OF_STOCK_MSG,
+} from "../../../constants/modalMessages";
+import {
+  CART_HEADERS,
+  CART_LABELS,
+  MENU_HEADERS,
+  MENU_LABELS,
+} from "../../../constants/list";
+import { c_dark_yellow } from "../../../utils/colors";
+import { formatTableData } from "./utils/MenuUtils";
+import Cart from "../../../components/Cart/Cart";
+import LoadingSpin from "../../../components/elements/LoadingSpin/LoadingSpin";
+import Table from "../../../components/elements/Table/Table";
 
 const API_URL = process.env.REACT_APP_API_MENU_URL;
 
-const Root = styled.div`
-  padding: 20px 20px;
-`;
+const Root = styled.div``;
 
 const Title = styled.div`
   font-size: 1.8rem;
-`;
-
-const SpinWrapper = styled.div`
-  margin: 0 auto;
 `;
 
 const Menu = () => {
@@ -30,14 +34,6 @@ const Menu = () => {
     personId: 1,
     items: [],
   });
-  const menuTableHeaders = [
-    "Name",
-    "Description",
-    "Ingredients",
-    "Price (CAD)",
-    "",
-  ];
-  const labels = ["name", "description", "ingredients", "price"];
 
   useEffect(() => {
     axios.get(API_URL).then((response) => {
@@ -54,7 +50,7 @@ const Menu = () => {
     });
   }, []);
 
-  const handleOnOrder = ({ itemIndex }) => {
+  const handleOnAddToCart = ({ itemIndex }) => {
     setInputMatrix({
       ...inputMatrix,
       items: [...inputMatrix.items, menu[itemIndex]],
@@ -68,25 +64,34 @@ const Menu = () => {
     });
   };
 
-  return menu.length > 0 ? (
+  return menu && menu.length ? (
     <Root>
       <Title>Menu</Title>
       <Table
         buttonColor={c_dark_yellow}
         buttonLabel="Add to Cart"
         data={menu}
-        headers={menuTableHeaders}
+        headers={MENU_HEADERS}
         inputMatrix={inputMatrix}
-        labels={labels}
+        labels={MENU_LABELS}
         onChange={handleInputChange}
-        onClick={handleOnOrder.bind(this)}
+        onClick={handleOnAddToCart.bind(this)}
       />
-      <Cart inputMatrix={inputMatrix} onChange={handleInputChange} />
+      <Cart
+        errorMessage={OUT_OF_STOCK_MSG}
+        headers={CART_HEADERS}
+        inputMatrix={inputMatrix}
+        labels={CART_LABELS}
+        onChange={handleInputChange}
+        onFormatTableData={formatTableData}
+        orderLabel={"items"}
+        orderProductLabel={"itemName"}
+        successMessage={COMPLETE_PURCHASE_MSG}
+        warningMessage={ADD_TO_CART_MSG}
+      />
     </Root>
   ) : (
-    <SpinWrapper>
-      <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-    </SpinWrapper>
+    <LoadingSpin />
   );
 };
 

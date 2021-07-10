@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 
+import Input from "../Input/Input";
+
+/* TODO: column width */
 const Root = styled.table`
   width: 100%;
   margin-top: 2vh;
@@ -10,7 +13,8 @@ const Root = styled.table`
   }
 `;
 
-/* TODO: column width */
+const TBody = styled.tbody``;
+const THead = styled.thead``;
 
 const TableRow = styled.tr`
   text-align: center;
@@ -41,8 +45,10 @@ const Table = ({
   buttonLabel,
   data,
   headers,
+  inputField,
+  inputMatrix,
   labels,
-  onClick,
+  onBlur,
   subLabelHeader,
   subLabels,
   tdHeight,
@@ -54,103 +60,166 @@ const Table = ({
     tdHeight: tdHeight,
   };
 
+  const handleOnClick = (event) => {
+    const { form } = event.target;
+    const input = form[0];
+    const { max, min, name, value } = input;
+
+    if (max && parseFloat(value) > parseFloat(max)) {
+      return;
+    }
+
+    if (min && parseFloat(value) < parseFloat(min)) {
+      return;
+    }
+
+    onBlur({
+      name: name,
+      value: value,
+    });
+  };
+
   return (
     <Root>
-      <TableRow>
-        {headers.map((header, index) => (
-          <TableHead
-            key={index}
-            colSpan={
-              subLabelHeader && header === subLabelHeader && subLabels.length
-            }
-          >
-            {header}
-          </TableHead>
-        ))}
-      </TableRow>
-      {subLabelHeader && (
+      <THead>
         <TableRow>
-          {headers.map((header, sIndex) =>
-            header === subLabelHeader ? (
-              subLabels.map((subLabel, subLabelIndx) => (
-                <TableHead key={subLabelIndx}>{subLabel}</TableHead>
-              ))
-            ) : (
-              <TableHead key={sIndex}>{""}</TableHead>
-            )
-          )}
+          {headers.map((header, index) => (
+            <TableHead
+              key={`${header}-${index}-${Math.random()}`}
+              colSpan={
+                subLabelHeader && header === subLabelHeader && subLabels.length
+              }
+            >
+              {header}
+            </TableHead>
+          ))}
         </TableRow>
-      )}
-      {data.map((item, itemIndex) => {
-        const subItemLabel = String(subLabelHeader).toLowerCase();
-        const subItems = subLabelHeader && item[subItemLabel];
-
-        if (subItems) {
-          return subItems.map((subItem, subItemIndex) => {
-            if (subItemIndex === 0) {
-              return (
-                <TableRow
-                  key={itemIndex}
-                  className={subItemIndex === subItems.length - 1 ? "last" : ""}
-                >
-                  {labels.map((label, labelIndex) => {
-                    if (label !== subItemLabel) {
-                      return (
-                        <TableData
-                          {...tdStyleProps}
-                          key={labelIndex}
-                          rowSpan={subItems.length}
-                        >
-                          {item[label]}
-                        </TableData>
-                      );
-                    } else {
-                      return subLabels.map((subLabel, subLabelIndex) => (
-                        <TableData key={subLabelIndex}>
-                          {subItem[subLabel]}
-                        </TableData>
-                      ));
-                    }
-                  })}
-                </TableRow>
-              );
-            } else {
-              return (
-                <TableRow
-                  key={itemIndex}
-                  className={subItemIndex === subItems.length - 1 ? "last" : ""}
-                >
-                  {subLabels.map((subLabel, subLabelIndex) => (
-                    <TableData key={subLabelIndex}>
-                      {subItem[subLabel]}
-                    </TableData>
-                  ))}
-                </TableRow>
-              );
-            }
-          });
-        } else {
-          return (
-            <TableRow key={itemIndex}>
-              {labels.map((label, labelIndex) => (
-                <TableData {...tdStyleProps} key={labelIndex}>
-                  {item[label]}
-                </TableData>
-              ))}
-              {item.name && buttonLabel ? (
-                <TableData {...tdStyleProps}>
-                  <TableButton
-                    {...buttonStyleProps}
-                    onClick={() => onClick({ itemIndex })}
+        {subLabelHeader && (
+          <TableRow>
+            {headers.map((header, headerIndex) =>
+              header === subLabelHeader ? (
+                subLabels.map((subLabel, subLabelIndex) => (
+                  <TableHead
+                    key={`${subLabel}-${subLabelIndex}-${Math.random()}`}
                   >
-                    {buttonLabel}
-                  </TableButton>
-                </TableData>
-              ) : null}
-            </TableRow>
-          );
-        }
-      })}
+                    {subLabel}
+                  </TableHead>
+                ))
+              ) : (
+                <TableHead key={`${header}-${headerIndex}-${Math.random()}`}>
+                  {""}
+                </TableHead>
+              )
+            )}
+          </TableRow>
+        )}
+      </THead>
+      <TBody>
+        {data.map((item, itemIndex) => {
+          const subItemLabel = String(subLabelHeader).toLowerCase();
+          const subItems = subLabelHeader && item[subItemLabel];
+
+          // if nested data exist
+          if (subItems) {
+            return subItems.map((subItem, subItemIndex) => {
+              if (subItemIndex === 0) {
+                return (
+                  <TableRow
+                    key={`${subItem}-${itemIndex}-${Math.random()}`}
+                    className={
+                      subItemIndex === subItems.length - 1 ? "last" : ""
+                    }
+                  >
+                    {labels.map((label, labelIndex) => {
+                      if (label !== subItemLabel) {
+                        return (
+                          <TableData
+                            {...tdStyleProps}
+                            key={`${label}-${labelIndex}-${Math.random()}`}
+                            rowSpan={subItems.length}
+                          >
+                            {item[label]}
+                          </TableData>
+                        );
+                      } else {
+                        return subLabels.map((subLabel, subLabelIndex) => (
+                          <TableData
+                            key={`${subLabel}-${subLabelIndex}-${Math.random()}`}
+                          >
+                            {subItem[subLabel]}
+                          </TableData>
+                        ));
+                      }
+                    })}
+                  </TableRow>
+                );
+              } else {
+                return (
+                  <TableRow
+                    key={`${item}-${itemIndex}-${Math.random()}`}
+                    className={
+                      subItemIndex === subItems.length - 1 ? "last" : ""
+                    }
+                  >
+                    {subLabels.map((subLabel, subLabelIndex) => (
+                      <TableData
+                        key={`${subLabel}-${subLabelIndex}-${Math.random()}`}
+                      >
+                        {subItem[subLabel]}
+                      </TableData>
+                    ))}
+                  </TableRow>
+                );
+              }
+            });
+          } else {
+            return (
+              <TableRow key={`${item}-${itemIndex}-${Math.random()}`}>
+                {labels.map((label, labelIndex) => (
+                  <TableData
+                    {...tdStyleProps}
+                    key={`${item[label]}-${label}-${labelIndex}}`}
+                  >
+                    {item[label]}
+                  </TableData>
+                ))}
+                {item.name && inputField && (
+                  <TableData {...tdStyleProps}>
+                    <form
+                      id={`form-${item.name}`}
+                      key={`form-${item.name}-${itemIndex}`}
+                    >
+                      <Input
+                        inputMatrix={inputMatrix}
+                        key={`${item.name}-${itemIndex}`}
+                        min="0"
+                        max="999"
+                        name={item.name}
+                        placeholder="0 - 999"
+                        step={1}
+                        type="number"
+                      />
+                    </form>
+                  </TableData>
+                )}
+                {item.name && buttonLabel && (
+                  <TableData {...tdStyleProps}>
+                    <TableButton
+                      key={`button-${item.name}-${itemIndex}`}
+                      type="button"
+                      form={`form-${item.name}`}
+                      {...buttonStyleProps}
+                      onClick={handleOnClick}
+                    >
+                      {buttonLabel}
+                    </TableButton>
+                  </TableData>
+                )}
+              </TableRow>
+            );
+          }
+        })}
+      </TBody>
     </Root>
   );
 };

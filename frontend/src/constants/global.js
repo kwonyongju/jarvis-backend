@@ -29,4 +29,9 @@ export const GlobalStyle = createGlobalStyle`
     text-align: center;
     white-space: break-spaces;
   }
+
+  .ant-modal-footer {
+    display: flex;
+    justify-content: center;
+  }
 `;
