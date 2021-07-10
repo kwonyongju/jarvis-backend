@@ -7,18 +7,18 @@ import {
   ADD_TO_CART_MSG,
   COMPLETE_PURCHASE_MSG,
   OUT_OF_STOCK_MSG,
-} from "../../../constants/messages";
+} from "../../constants/messages";
 import {
   CART_HEADERS,
   CART_LABELS,
   MENU_HEADERS,
   MENU_LABELS,
-} from "../../../constants/list";
-import { c_dark_yellow } from "../../../utils/colors";
-import { formatDataToCart } from "../../../utils/format";
-import Cart from "../../../components/Cart/Cart";
-import LoadingSpin from "../../../components/elements/LoadingSpin/LoadingSpin";
-import Table from "../../../components/elements/Table/Table";
+} from "../../constants/list";
+import { c_dark_yellow } from "../../utils/colors";
+import { formatDataToCart } from "../../utils/format";
+import Cart from "../../components/Cart/Cart";
+import LoadingSpin from "../../components/elements/LoadingSpin/LoadingSpin";
+import Table from "../../components/elements/Table/Table";
 
 const API_URL = process.env.REACT_APP_API_MENU_URL;
 

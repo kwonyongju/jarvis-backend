@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Select from "react-select";
 
-import { INGREDIENT_SELECT_OPTIONS } from "../../../../constants/list";
-import Row from "../../../../components/layout/Row";
+import { INGREDIENT_SELECT_OPTIONS } from "../../../constants/list";
+import Row from "../../../components/layout/Row";
 
 const API_URL = process.env.REACT_APP_API_MENU_URL;
 

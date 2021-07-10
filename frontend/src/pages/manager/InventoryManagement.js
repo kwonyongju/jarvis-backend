@@ -14,7 +14,7 @@ const API_URL = process.env.REACT_APP_API_INVENTORY_URL;
 
 const Root = styled.div``;
 
-const Inventory = () => {
+const InventoryManagement = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [inputMatrix, setInputMatrix] = useState({
     personId: 2,
@@ -145,4 +145,4 @@ const Inventory = () => {
   );
 };
 
-export default Inventory;
+export default InventoryManagement;

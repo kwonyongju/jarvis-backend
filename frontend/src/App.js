@@ -10,12 +10,13 @@ import Main from "./pages/Main";
 import Customer from "./pages/Customer";
 import Manager from "./pages/Manager";
 import { NAV_ITEMS } from "./constants/navItems";
-import Menu from "./pages/customer/Menu/CustomerMenu";
+import Menu from "./pages/customer/Menu";
 import PurchaseHistory from "./pages/customer/Purchases";
 import Sales from "./pages/manager/Sales";
-import ManagerMenu from "./pages/manager/ManagerMenu/ManagerMenu";
-import Inventory from "./pages/manager/Inventory";
+import MenuManagement from "./pages/manager/MenuManagement";
+import InventoryManagement from "./pages/manager/InventoryManagement";
 import OrderHistory from "./pages/manager/Orders";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const App = () => {
   return (
@@ -33,7 +34,7 @@ const App = () => {
             <Route path="/customer">
               <Customer />
             </Route>
-            <Route path="/customerMenu">
+            <Route path="/menu">
               <Menu />
             </Route>
             <Route path="/purchases">
@@ -42,18 +43,19 @@ const App = () => {
             <Route path="/manager">
               <Manager />
             </Route>
-            <Route path="/managerMenu">
-              <ManagerMenu />
+            <Route path="/menuManagement">
+              <MenuManagement />
             </Route>
             <Route path="/sales">
               <Sales />
             </Route>
-            <Route path="/inventory">
-              <Inventory />
+            <Route path="/inventoryManagement">
+              <InventoryManagement />
             </Route>
             <Route path="/orders">
               <OrderHistory />
             </Route>
+            <Route path="*" component={NotFoundPage} />
           </Switch>
         </Content>
       </Router>

@@ -9,6 +9,7 @@ const Root = styled.li`
 
   a:hover {
     color: ${c_dark_gray};
+    cursor: default;
   }
 `;
 

@@ -50,8 +50,9 @@ const Table = ({
   labels,
   onBlur,
   onClick,
-  subLabelHeader,
+  subParentHeader,
   subLabels,
+  subItemsLabel,
   tdHeight,
 }) => {
   const buttonStyleProps = {
@@ -89,17 +90,19 @@ const Table = ({
             <TableHead
               key={`${header}-${index}-${Math.random()}`}
               colSpan={
-                subLabelHeader && header === subLabelHeader && subLabels.length
+                subParentHeader &&
+                header === subParentHeader &&
+                subLabels.length
               }
             >
               {header}
             </TableHead>
           ))}
         </TableRow>
-        {subLabelHeader && (
+        {subParentHeader && (
           <TableRow>
             {headers.map((header, headerIndex) =>
-              header === subLabelHeader ? (
+              header === subParentHeader ? (
                 subLabels.map((subLabel, subLabelIndex) => (
                   <TableHead
                     key={`${subLabel}-${subLabelIndex}-${Math.random()}`}
@@ -118,9 +121,9 @@ const Table = ({
       </THead>
       <TBody>
         {data.map((item, itemIndex) => {
-          const subItemLabel = String(subLabelHeader).toLowerCase();
-          const subItems = subLabelHeader && item[subItemLabel];
-
+          // const subItemLabel = subLabelHeader;
+          const subItems = subItemsLabel && item[subItemsLabel];
+          console.log(subItems);
           // if nested data exist
           if (subItems) {
             return subItems.map((subItem, subItemIndex) => {
@@ -133,7 +136,7 @@ const Table = ({
                     }
                   >
                     {labels.map((label, labelIndex) => {
-                      if (label !== subItemLabel) {
+                      if (label !== subItemsLabel) {
                         return (
                           <TableData
                             {...tdStyleProps}

@@ -22,7 +22,7 @@ Manager can
 3. see ingredients order history 
 4. see sales history
 
-If you hover cursor on 'Customer' and 'Manager' on the top-left, you will see the menus.
+If you hover cursor on 'Customer' and 'Manager' on the top-right, you will see the menus.
 
 
 `;

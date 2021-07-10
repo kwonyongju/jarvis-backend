@@ -23,14 +23,25 @@ It will be delivered in a second w/ rocket delivery🚀
 (which means you will see the updated stock quantity right away!)
 `;
 
-export const NO_ORDER_YET_MSG = `
+export const NO_MENU_ORDER_YET_MSG = `
 There is not any order yet.
 
-Please order the delicious burgers!🍔🍔
+Please order our delicious burgers!🍔🍔
 `;
 
 export const NO_SALES_YET_MSG = `
 There is not any order yet.
 
 I think we need to post some photos on Instagram..  
+`;
+
+export const NO_INGREDIENT_ORDER_YET_MSG = `
+There is not any order yet.
+
+Please order ingredients 🍅🥩🥬 to offer delicious burgers!
+`;
+
+export const NOT_FOUND_MSG = `
+404 Not Found
+
 `;

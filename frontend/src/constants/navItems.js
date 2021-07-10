@@ -2,7 +2,7 @@ export const NAV_ITEMS = [
   {
     name: "Customer",
     subItems: [
-      { name: "Menu/Order", label: "customerMenu" },
+      { name: "Menu/Order", label: "Menu" },
       { name: "Order History", label: "purchases" },
     ],
     label: "customer",
@@ -10,10 +10,10 @@ export const NAV_ITEMS = [
   {
     name: "Manager",
     subItems: [
-      { name: "Menu/Add", label: "managerMenu" },
-      { name: "Sales History", label: "sales" },
-      { name: "Inventory/Order", label: "inventory" },
+      { name: "Inventory/Order", label: "inventoryManagement" },
+      { name: "Menu/Add", label: "menuManagement" },
       { name: "Order History", label: "orders" },
+      { name: "Sales History", label: "sales" },
     ],
     label: "manager",
   },

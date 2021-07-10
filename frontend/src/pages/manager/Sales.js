@@ -25,14 +25,14 @@ const NoOrderWrapper = styled.div`
 `;
 
 const Sales = () => {
-  const [sales, setSales] = useState([]);
+  const [inputMatrix, setInputMatrix] = useState([]);
   const headers = ["Date", "Customer Name", "Items", "Total Price"];
   const labels = ["date", "customerName", "items", "totalPrice"];
   const subLabels = ["name", "quantity", "price"];
 
   useEffect(() => {
     axios.get(API_URL).then((response) => {
-      const salesData = response.data.data.map((sale) => {
+      const temp = response.data.data.map((sale) => {
         let sum = 0;
         return {
           date: `${sale.purchaseDate.slice(0, 3).join("-")} ${sale.purchaseDate
@@ -50,20 +50,22 @@ const Sales = () => {
           totalPrice: `$${((sum / 100) * 1.05).toFixed(2)}`,
         };
       });
-      setSales(salesData);
+      temp.reverse();
+      setInputMatrix(temp);
     });
   }, []);
 
-  return sales && sales.length ? (
+  return inputMatrix && inputMatrix.length ? (
     <Root>
-      <Title>Order History</Title>
+      <Title>Sales History</Title>
 
       <Table
-        data={sales}
+        data={inputMatrix}
         headers={headers}
         labels={labels}
-        subLabelHeader="Items"
+        subItemsLabel="items"
         subLabels={subLabels}
+        subParentHeader="Items"
       />
     </Root>
   ) : (

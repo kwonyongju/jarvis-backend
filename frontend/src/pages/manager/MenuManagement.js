@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-import { MENU_HEADERS, MENU_LABELS } from "../../../constants/list";
+import { MENU_HEADERS, MENU_LABELS } from "../../constants/list";
 import AddModalContent from "./utils/AddModalContent";
-import { c_brown, c_dark_yellow } from "../../../utils/colors";
+import { c_brown, c_dark_yellow } from "../../utils/colors";
 import { Modal } from "antd";
-import LoadingSpin from "../../../components/elements/LoadingSpin/LoadingSpin";
-import Row from "../../../components/layout/Row";
-import Table from "../../../components/elements/Table/Table";
+import LoadingSpin from "../../components/elements/LoadingSpin/LoadingSpin";
+import Row from "../../components/layout/Row";
+import Table from "../../components/elements/Table/Table";
 
 const API_URL = process.env.REACT_APP_API_MENU_URL;
 
@@ -39,7 +39,7 @@ const SubmitButton = styled.button`
   width: 380px;
 `;
 
-const Menu = () => {
+const MenuManagement = () => {
   const [inputMatrix, setInputMatrix] = useState({
     personId: 1,
     items: [],
@@ -170,6 +170,7 @@ const Menu = () => {
           </SubmitButton>,
         ]}
       >
+        {/** TODO: control number of ingredient */}
         <AddModalContent
           formData={formData}
           handleChange={handleOnFormDataChange.bind(this)}
@@ -183,4 +184,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default MenuManagement;

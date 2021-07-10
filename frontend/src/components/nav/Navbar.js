@@ -43,7 +43,7 @@ const Navbar = ({ navItems, navLeft, noPadding, noFontWeight }) => {
           <NavItem
             key={index}
             last={index === navItems.length - 1}
-            linkTo={item.label}
+            // linkTo={item.label}
             name={item.name}
             subItems={item.subItems}
           />

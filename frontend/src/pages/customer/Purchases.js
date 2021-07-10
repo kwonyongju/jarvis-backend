@@ -4,8 +4,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import Table from "../../components/elements/Table/Table";
-import LoadingSpin from "../../components/elements/LoadingSpin/LoadingSpin";
-import { NO_ORDER_YET_MSG } from "../../constants/messages";
+import { NO_MENU_ORDER_YET_MSG } from "../../constants/messages";
 
 const API_URL = process.env.REACT_APP_API_PURCHASE_URL;
 
@@ -31,14 +30,14 @@ const OrderLink = styled(Link)`
 `;
 
 const PurchaseHistory = () => {
-  const [purchases, setPurchases] = useState([]);
-  const purchaseTableHeaders = ["Date", "Items", "Total Price"];
+  const [inputMatrix, setInputMatrix] = useState([]);
+  const headers = ["Date", "Items", "Total Price"];
   const labels = ["date", "items", "totalPrice"];
   const subLabels = ["name", "quantity", "price"];
 
   useEffect(() => {
     axios.get(API_URL).then((response) => {
-      const purchaseData = response.data.data.map((purchase) => {
+      const temp = response.data.data.map((purchase) => {
         let sum = 0;
         return {
           date: `${purchase.purchaseDate
@@ -55,29 +54,29 @@ const PurchaseHistory = () => {
           totalPrice: `$${((sum / 100) * 1.05).toFixed(2)}`,
         };
       });
-      setPurchases(purchaseData);
+      temp.reverse();
+      setInputMatrix(temp);
     });
   }, []);
 
-  console.log(purchases);
-
-  return purchases && purchases.length ? (
+  return inputMatrix && inputMatrix.length ? (
     <Root>
       <Title>Order History</Title>
 
       <Table
-        data={purchases}
-        headers={purchaseTableHeaders}
+        data={inputMatrix}
+        headers={headers}
         labels={labels}
-        subLabelHeader="Items"
+        subItemsLabel="items"
         subLabels={subLabels}
+        subParentHeader="Items"
       />
     </Root>
   ) : (
     <>
       <NoOrderWrapper>
-        {NO_ORDER_YET_MSG}
-        <OrderLink to="/customerMenu">Click to order</OrderLink>
+        {NO_MENU_ORDER_YET_MSG}
+        <OrderLink to="/Menu">Click to order</OrderLink>
       </NoOrderWrapper>
     </>
   );
