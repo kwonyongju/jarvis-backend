@@ -1,21 +1,23 @@
-const formatTableData = (items) => {
+const formatDataToCart = ({ items, nameLabel }) => {
   const map = new Map();
   const temp = [];
 
   items.forEach((item) => {
-    if (!map.has(item.name)) map.set(item.name, 1);
-    else map.set(item.name, map.get(item.name) + 1);
+    const cur = item[nameLabel];
+
+    if (!map.has(cur)) map.set(cur, 1);
+    else map.set(cur, map.get(cur) + 1);
   });
 
   let index = 0;
   let totalPrice = 0;
   map.forEach((value, key) => {
-    const item = items.find((i) => i.name === key);
+    const item = items.find((i) => i[nameLabel] === key);
     const price = (item.price * value).toFixed(2);
 
     temp.push({
       index: ++index,
-      name: item.name,
+      name: item[nameLabel],
       quantity: value,
       price: price,
       tax: (price * 0.05).toFixed(2),
@@ -32,5 +34,5 @@ const formatTableData = (items) => {
 };
 
 module.exports = {
-  formatTableData,
+  formatDataToCart,
 };
