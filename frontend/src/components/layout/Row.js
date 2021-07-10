@@ -12,6 +12,7 @@ const Root = styled.div`
 `;
 
 const Row = ({
+  alignEnd,
   children,
   justifyCenter,
   marginBottom,
@@ -20,6 +21,7 @@ const Row = ({
   spaceBetween,
 }) => {
   const styleProps = {
+    alignEnd: alignEnd,
     justifyCenter: justifyCenter,
     marginBottom: marginBottom,
     marginBottomDouble: marginBottomDouble,

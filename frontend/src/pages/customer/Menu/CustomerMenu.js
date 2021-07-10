@@ -7,7 +7,7 @@ import {
   ADD_TO_CART_MSG,
   COMPLETE_PURCHASE_MSG,
   OUT_OF_STOCK_MSG,
-} from "../../../constants/modalMessages";
+} from "../../../constants/messages";
 import {
   CART_HEADERS,
   CART_LABELS,

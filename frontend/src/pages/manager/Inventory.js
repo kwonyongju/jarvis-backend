@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-import {
-  ADD_TO_CART_MSG,
-  COMPLETE_ORDER_MSG,
-} from "../../constants/modalMessages";
+import { ADD_TO_CART_MSG, COMPLETE_ORDER_MSG } from "../../constants/messages";
 import { c_dark_yellow } from "../../utils/colors";
 import { formatDataToCart } from "../../utils/format";
 import Cart from "../../components/Cart/Cart";

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { InstagramOutlined } from "@ant-design/icons";
 
+import { c_dim_green } from "../../utils/colors";
+import { NO_SALES_YET_MSG } from "../../constants/messages";
 import Table from "../../components/elements/Table/Table";
-import LoadingSpin from "../../components/elements/LoadingSpin/LoadingSpin";
 
 const API_URL = process.env.REACT_APP_API_PURCHASE_URL;
 
@@ -11,6 +13,15 @@ const Root = styled.div``;
 
 const Title = styled.div`
   font-size: 1.8rem;
+`;
+
+const NoOrderWrapper = styled.div`
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  white-space: break-spaces;
+  align-items: flex-end;
 `;
 
 const Sales = () => {
@@ -56,7 +67,12 @@ const Sales = () => {
       />
     </Root>
   ) : (
-    <LoadingSpin />
+    <NoOrderWrapper>
+      {NO_SALES_YET_MSG}
+      <InstagramOutlined
+        style={{ fontSize: "40px", color: `${c_dim_green}` }}
+      />
+    </NoOrderWrapper>
   );
 };
 

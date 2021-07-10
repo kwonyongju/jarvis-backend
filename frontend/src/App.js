@@ -16,7 +16,6 @@ import Sales from "./pages/manager/Sales";
 import ManagerMenu from "./pages/manager/ManagerMenu/ManagerMenu";
 import Inventory from "./pages/manager/Inventory";
 import OrderHistory from "./pages/manager/Orders";
-import IngredientsList from "./pages/manager/Ingredients";
 
 const App = () => {
   return (
@@ -51,9 +50,6 @@ const App = () => {
             </Route>
             <Route path="/inventory">
               <Inventory />
-            </Route>
-            <Route path="/ingredients">
-              <IngredientsList />
             </Route>
             <Route path="/orders">
               <OrderHistory />

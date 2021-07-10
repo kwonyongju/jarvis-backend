@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
 import Table from "../../components/elements/Table/Table";
 import LoadingSpin from "../../components/elements/LoadingSpin/LoadingSpin";
+import { NO_ORDER_YET_MSG } from "../../constants/messages";
 
 const API_URL = process.env.REACT_APP_API_PURCHASE_URL;
 
@@ -11,6 +13,21 @@ const Root = styled.div``;
 
 const Title = styled.div`
   font-size: 1.8rem;
+`;
+
+const NoOrderWrapper = styled.div`
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  white-space: break-spaces;
+  flex-direction: column;
+`;
+
+const OrderLink = styled(Link)`
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 30px;
 `;
 
 const PurchaseHistory = () => {
@@ -42,6 +59,8 @@ const PurchaseHistory = () => {
     });
   }, []);
 
+  console.log(purchases);
+
   return purchases && purchases.length ? (
     <Root>
       <Title>Order History</Title>
@@ -55,7 +74,12 @@ const PurchaseHistory = () => {
       />
     </Root>
   ) : (
-    <LoadingSpin />
+    <>
+      <NoOrderWrapper>
+        {NO_ORDER_YET_MSG}
+        <OrderLink to="/customerMenu">Click to order</OrderLink>
+      </NoOrderWrapper>
+    </>
   );
 };
 

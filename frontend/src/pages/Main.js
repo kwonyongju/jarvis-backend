@@ -23,6 +23,7 @@ const Title = styled.div`
 const Description = styled.div`
   display: flex;
   justify-content: center;
+  white-space: break-spaces;
 `;
 
 const Main = () => {

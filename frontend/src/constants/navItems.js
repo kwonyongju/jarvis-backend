@@ -11,9 +11,8 @@ export const NAV_ITEMS = [
     name: "Manager",
     subItems: [
       { name: "Menu/Add", label: "managerMenu" },
-      { name: "Sales", label: "sales" },
-      { name: "Inventory", label: "inventory" },
-      { name: "Ingredients List", label: "ingredients" },
+      { name: "Sales History", label: "sales" },
+      { name: "Inventory/Order", label: "inventory" },
       { name: "Order History", label: "orders" },
     ],
     label: "manager",

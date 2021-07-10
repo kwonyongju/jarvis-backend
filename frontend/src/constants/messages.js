@@ -1,3 +1,5 @@
+import { InstagramOutlined } from "@ant-design/icons";
+
 export const OUT_OF_STOCK_MSG = `
 We are very sorry, we just had a mukbang show with a Youtuber. He has
 eaten all of our burgers..
@@ -19,4 +21,16 @@ export const COMPLETE_ORDER_MSG = `
 The order has been made. 
 It will be delivered in a second w/ rocket delivery🚀
 (which means you will see the updated stock quantity right away!)
+`;
+
+export const NO_ORDER_YET_MSG = `
+There is not any order yet.
+
+Please order the delicious burgers!🍔🍔
+`;
+
+export const NO_SALES_YET_MSG = `
+There is not any order yet.
+
+I think we need to post some photos on Instagram..  
 `;
