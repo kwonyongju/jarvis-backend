@@ -21,7 +21,7 @@ public class DBInitialization {
 
     @PostConstruct
     public void init() throws Exception {
-        initializationService.initializeDB();
+//        initializationService.initializeDB();
     }
 
     @Component

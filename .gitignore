@@ -37,5 +37,5 @@ out/
 .vscode/
 
 ### DB initialization
-../src/main/java/com/management/inventory/yjinventorymanagement/DBInitialization.java
-../src/main/resources/application.yml
+*/DBInitialization.java
+*/application.yml
