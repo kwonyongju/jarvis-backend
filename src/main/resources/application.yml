@@ -1,25 +1,20 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/yj-inventory-management
-    #    url: jdbc:mysql://localhost/inventory_management
-    username: sa
-    #    username: root
-    password:
-    driver-class-name: org.h2.Driver
-  #    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://aws-jarvis-mysql.cngijpxqcqmy.us-west-2.rds.amazonaws.com:3306/JarvisDB
+    username: admin
+    password: chil2wouc.BENK_molt
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
-        #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100
-#    open-in-view: false
-
 
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE
+
